@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
+import LogoMark from "@/components/logo";
 
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
@@ -19,6 +20,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-3">
           <div>
+            <LogoMark size={36} className="mb-4" />
             <p className="text-lg font-extrabold tracking-tight">{site.name}</p>
             <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
               {site.nameEn}

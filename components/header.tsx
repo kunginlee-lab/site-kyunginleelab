@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/site.config";
+import LogoMark from "@/components/logo";
 
 const nav = [
   { label: "소개", href: "/#about" },
@@ -10,7 +11,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-baseline gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
+          <LogoMark size={26} />
           <span className="text-lg font-extrabold tracking-tight">
             {site.name}
           </span>

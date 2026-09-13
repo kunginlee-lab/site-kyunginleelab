@@ -17,7 +17,8 @@ export const site = {
   business: {
     registrationNumber: "350-01-04344",
     representative: "이경인",
-    address: "", // 사업장 주소 (사업자등록증 기준). 공개하려면 채운다
+    address:
+      "경기도 수원시 영통구 덕영대로1555번길 20, 941동 1205호 (영통동, 벽적골 롯데아파트)",
   },
   privacy: {
     effectiveDate: "2026년 9월 13일",
