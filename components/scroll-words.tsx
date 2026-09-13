@@ -71,7 +71,8 @@ export default function ScrollWords({
                   <span
                     className="inline-block"
                     style={{
-                      opacity: 0.1 + 0.9 * t,
+                      // 안 켜진 단어는 완전히 숨겨 문장이 처음부터 한 단어씩 나타나게 한다
+                      opacity: t,
                       transform: `translateY(${(1 - t) * 0.45}em)`,
                       filter: `blur(${(1 - t) * 7}px)`,
                       color:
