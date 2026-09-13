@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
 import Reveal from "@/components/reveal";
+import ScrollShowcase from "@/components/scroll-showcase";
 
 export function generateStaticParams() {
   return apps.map((app) => ({ slug: app.slug }));
@@ -16,12 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const app = apps.find((a) => a.slug === slug);
   if (!app) return {};
+  const title = `${app.name} — ${app.tagline}`;
   return {
-    title: `${app.name} — ${app.tagline}`,
+    title,
     description: app.short,
+    alternates: { canonical: `/${app.slug}/` },
     openGraph: {
-      title: `${app.name} — ${app.tagline}`,
+      title,
       description: app.short,
+      url: `/${app.slug}/`,
       ...(app.hasOgImage && { images: [`/apps/${app.slug}/og.png`] }),
     },
   };
@@ -32,8 +37,29 @@ export default async function AppPage({ params }: Props) {
   const app = apps.find((a) => a.slug === slug);
   if (!app) notFound();
 
+  const appLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: app.name,
+    description: app.short,
+    url: `${site.url}/${app.slug}/`,
+    image: `${site.url}${appIcon(app)}`,
+    applicationCategory: "HealthApplication",
+    operatingSystem: "Android",
+    ...(app.playUrl && { installUrl: app.playUrl }),
+    offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+    author: { "@type": "Organization", name: site.name, url: site.url },
+  };
+
+  const hasShowcase = !!(app.screens?.length && app.features?.length);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd) }}
+      />
+
       {/* Hero */}
       <section className="hero-bg">
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-16 text-center sm:pt-28">
@@ -73,45 +99,57 @@ export default async function AppPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Screenshots */}
-      {app.screens && app.screens.length > 0 && (
+      {/* Showcase — 스크린샷 + 기능을 스크롤리텔링으로 */}
+      {hasShowcase ? (
         <section className="border-y border-line bg-surface/70">
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-14 sm:grid-cols-4">
-            {app.screens.map((s, i) => (
-              <Reveal key={s.file} delay={i * 90}>
-                <Image
-                  src={`/apps/${app.slug}/${s.file}`}
-                  alt={s.alt}
-                  width={720}
-                  height={1600}
-                  className="w-full rounded-2xl border border-line"
-                />
-              </Reveal>
-            ))}
+          <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+            <ScrollShowcase
+              slug={app.slug}
+              screens={app.screens!}
+              features={app.features!}
+            />
           </div>
         </section>
-      )}
-
-      {/* Features */}
-      {app.features && app.features.length > 0 && (
-        <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-          <div className="grid gap-10 sm:grid-cols-2">
-            {app.features.map((f, i) => (
-              <Reveal key={f.title} delay={(i % 2) * 110}>
-                <h2 className="mb-2 text-lg font-bold">
-                  <span className="mr-2">{f.emoji}</span>
-                  {f.title}
-                </h2>
-                <p className="leading-relaxed text-muted">{f.body}</p>
-              </Reveal>
-            ))}
-          </div>
-        </section>
+      ) : (
+        <>
+          {app.screens && app.screens.length > 0 && (
+            <section className="border-y border-line bg-surface/70">
+              <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-14 sm:grid-cols-4">
+                {app.screens.map((s, i) => (
+                  <Reveal key={s.file} delay={i * 90}>
+                    <Image
+                      src={`/apps/${app.slug}/${s.file}`}
+                      alt={s.alt}
+                      width={720}
+                      height={1600}
+                      className="w-full rounded-2xl border border-line"
+                    />
+                  </Reveal>
+                ))}
+              </div>
+            </section>
+          )}
+          {app.features && app.features.length > 0 && (
+            <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+              <div className="grid gap-10 sm:grid-cols-2">
+                {app.features.map((f, i) => (
+                  <Reveal key={f.title} delay={(i % 2) * 110}>
+                    <h2 className="mb-2 text-lg font-bold">
+                      <span className="mr-2">{f.emoji}</span>
+                      {f.title}
+                    </h2>
+                    <p className="leading-relaxed text-muted">{f.body}</p>
+                  </Reveal>
+                ))}
+              </div>
+            </section>
+          )}
+        </>
       )}
 
       {/* Pricing */}
       {app.pricing && (
-        <section className="border-t border-line bg-surface/70">
+        <section className="border-t border-line">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <Reveal>
               <h2 className="mb-2 text-center text-2xl font-bold tracking-tight">

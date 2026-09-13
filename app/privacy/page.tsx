@@ -5,6 +5,7 @@ import { apps } from "@/content/apps";
 export const metadata: Metadata = {
   title: "개인정보처리방침",
   description: `${site.name}(${site.legalNameEn}) 웹사이트 및 모바일 앱의 개인정보처리방침`,
+  alternates: { canonical: "/privacy/" },
 };
 
 // 앱에서 다루는 정보 — 각 앱의 개별 방침과 어긋나지 않게 "기기 내 저장"을 기본으로 둔다.

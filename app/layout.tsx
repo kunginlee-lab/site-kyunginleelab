@@ -4,18 +4,64 @@ import { site } from "@/site.config";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
+const description = `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.tagline}`,
     template: `%s | ${site.name}`,
   },
-  description: `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`,
+  description,
+  keywords: [
+    site.name,
+    site.nameEn,
+    site.legalNameEn,
+    "소프트웨어 스튜디오",
+    "모바일 앱 개발",
+    "CaloSnap",
+    "칼로리 기록 앱",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     siteName: site.name,
     locale: "ko_KR",
     type: "website",
+    url: "/",
   },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
+};
+
+// 검색엔진용 조직 정보 (Google 지식 패널·리치 결과)
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  alternateName: [site.nameEn, site.legalNameEn],
+  legalName: site.legalNameEn,
+  url: site.url,
+  logo: `${site.url}/brand/logo-mark.png`,
+  email: site.email,
+  foundingDate: "2026",
+  founder: { "@type": "Person", name: site.business.representative },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "덕영대로1555번길 20",
+    addressLocality: "수원시 영통구",
+    addressRegion: "경기도",
+    addressCountry: "KR",
+  },
+  taxID: site.business.registrationNumber,
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: site.url,
+  inLanguage: "ko-KR",
+  publisher: { "@type": "Organization", name: site.name, url: site.url },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -28,9 +74,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `document.documentElement.classList.add("js")`,
           }}
         />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">

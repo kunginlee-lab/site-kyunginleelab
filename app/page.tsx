@@ -2,7 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
+import { heroVideos } from "@/content/hero-videos";
 import Reveal from "@/components/reveal";
+import Parallax from "@/components/parallax";
+import ScrollWords from "@/components/scroll-words";
+import ScrollShowcase from "@/components/scroll-showcase";
+import HeroVideoBackground from "@/components/hero-video";
 
 const principles = [
   {
@@ -22,48 +27,61 @@ const principles = [
   },
 ];
 
+// 홈에서 스크롤리텔링으로 보여줄 대표 앱 — 스크린샷과 기능 설명이 모두 있는 첫 앱
+const featured = apps.find((a) => a.screens?.length && a.features?.length);
+
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="hero-bg">
-        <div className="mx-auto max-w-6xl px-6 pb-20 pt-24 sm:pb-32 sm:pt-40">
-          <Reveal>
-            <p className="eyebrow mb-5">{site.nameEn} · Software Studio</p>
-            <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-6xl sm:leading-[1.12]">
-              일상을 가볍게 만드는
-              <br />
-              소프트웨어를 만듭니다.
-            </h1>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              {site.name}은 복잡하고 번거로운 일상을 가장 단순한 형태로
-              바꾸는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.
-            </p>
-            <div className="mt-11 flex flex-wrap gap-3">
-              <a
-                href="#apps"
-                className="rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-85"
-              >
-                제품 보기
-              </a>
-              <a
-                href={`mailto:${site.email}`}
-                className="glass rounded-full border border-line px-7 py-3.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent-ink"
-              >
-                문의하기
-              </a>
-            </div>
-          </Reveal>
+      <section className="hero-bg relative overflow-hidden">
+        <HeroVideoBackground videos={heroVideos} />
+        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pb-40 sm:pt-48">
+          <Parallax>
+            <Reveal>
+              <p className="eyebrow mb-5">{site.nameEn} · Software Studio</p>
+              <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-6xl sm:leading-[1.12]">
+                일상을 가볍게 만드는
+                <br />
+                소프트웨어를 만듭니다.
+              </h1>
+            </Reveal>
+            <Reveal delay={120}>
+              <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+                {site.name}은 복잡하고 번거로운 일상을 가장 단순한 형태로
+                바꾸는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.
+              </p>
+              <div className="mt-11 flex flex-wrap gap-3">
+                <a
+                  href="#apps"
+                  className="rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-85"
+                >
+                  제품 보기
+                </a>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="glass rounded-full border border-line px-7 py-3.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent-ink"
+                >
+                  문의하기
+                </a>
+              </div>
+            </Reveal>
+          </Parallax>
+        </div>
+      </section>
+
+      {/* Statement — 스크롤하면 단어가 차례로 밝아진다 */}
+      <section className="border-y border-line bg-surface/70">
+        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-36">
+          <ScrollWords
+            className="max-w-4xl text-2xl font-bold leading-snug tracking-tight sm:text-4xl sm:leading-snug md:text-5xl md:leading-tight"
+            text="기능을 더하는 일보다 덜어내는 일에 시간을 씁니다. 설명이 필요 없고, 데이터를 요구하지 않고, 매일 한 번의 동작으로 끝나는 것. 그게 우리가 생각하는 좋은 소프트웨어입니다."
+          />
         </div>
       </section>
 
       {/* Principles */}
-      <section
-        id="about"
-        className="scroll-mt-20 border-y border-line bg-surface/70"
-      >
+      <section id="about" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <Reveal>
             <p className="eyebrow mb-3">Principles</p>
@@ -86,6 +104,36 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Featured — 고정 폰 목업 스크롤리텔링 */}
+      {featured && featured.screens && featured.features && (
+        <section className="border-y border-line bg-surface/70">
+          <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+            <Reveal>
+              <p className="eyebrow mb-3">Featured</p>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                {featured.name} — {featured.tagline}
+              </h2>
+              <p className="mt-3 max-w-xl text-muted">{featured.short}</p>
+            </Reveal>
+            <div className="mt-12 sm:mt-16">
+              <ScrollShowcase
+                slug={featured.slug}
+                screens={featured.screens}
+                features={featured.features}
+              />
+            </div>
+            <div className="mt-8 text-center sm:mt-12">
+              <Link
+                href={`/${featured.slug}/`}
+                className="inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-85"
+              >
+                {featured.name} 자세히 보기
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Apps */}
       <section id="apps" className="scroll-mt-20">
