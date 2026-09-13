@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/site.config";
 
 const nav = [
-  { label: "회사 소개", href: "/#about" },
+  { label: "소개", href: "/#about" },
   { label: "제품", href: "/#apps" },
 ];
 

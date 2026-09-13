@@ -59,7 +59,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
           <p className="eyebrow mb-3">Principles</p>
           <h2 className="max-w-lg text-2xl font-bold leading-snug tracking-tight sm:text-3xl">
-            우리가 제품을 만드는 방식
+            제품을 만드는 방식
           </h2>
           <div className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-3">
             {principles.map((p) => (
@@ -127,7 +127,7 @@ export default function Home() {
       <section className="border-y border-line bg-surface">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 sm:grid-cols-2 sm:py-24">
           <div>
-            <p className="eyebrow mb-3">Company</p>
+            <p className="eyebrow mb-3">Studio</p>
             <h2 className="text-2xl font-bold leading-snug tracking-tight sm:text-3xl">
               작지만, 기준은 높게.
             </h2>
