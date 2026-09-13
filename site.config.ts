@@ -1,22 +1,26 @@
 /**
  * 사이트 전역 설정 — 사업자 정보는 전부 이 파일에서만 관리합니다.
  *
- * ⚠️ 채워야 할 값 (비워두면 화면에 표시되지 않습니다):
- *  - representative: 대표자 성명 (사업자등록증 기준)
- *  - address: 사업장 주소 (전자상거래 표기 의무 — 등록증 기준)
- *  - nameEn: "Kyungin LeeLab" 확정 (2026-09-13) — D-U-N-S 신청서와 동일 표기 유지
- *  - url: 커스텀 도메인 연결 후 실제 도메인으로 교체
+ *  - nameEn: 화면 표시용 영문 브랜드 표기 (헤더·푸터 로고)
+ *  - legalNameEn: 공식 서류용 영문 상호 — D-U-N-S·Google 결제 프로필·홈택스 영문
+ *    사업자등록증명과 글자 단위로 동일하게 유지 (2026-09-13 확정: KYUNGINLEELAB)
+ *  - address: 사업장 주소 (전자상거래 표기 의무 — 등록증 기준). 비우면 표시되지 않음
  */
 // 앱 목록·제품 페이지 데이터는 content/apps.ts 에서 관리합니다.
 export const site = {
   name: "경인리랩",
   nameEn: "Kyungin LeeLab",
+  legalNameEn: "KYUNGINLEELAB",
   tagline: "일상을 가볍게 만드는 앱을 만듭니다",
-  url: "https://gyeonginrelab.vercel.app", // TODO: 커스텀 도메인 연결 후 교체
-  email: "vov.playconsole@gmail.com", // Play Console 공개 개발자 이메일과 동일하게 유지
+  url: "https://kyunginleelab.com",
+  email: "ceo@kyunginleelab.com",
   business: {
     registrationNumber: "350-01-04344",
-    representative: "", // TODO: 대표자 성명
-    address: "", // TODO: 사업장 주소
+    representative: "이경인",
+    address: "", // 사업장 주소 (사업자등록증 기준). 공개하려면 채운다
+  },
+  privacy: {
+    effectiveDate: "2026년 9월 13일",
+    officer: "이경인",
   },
 } as const;

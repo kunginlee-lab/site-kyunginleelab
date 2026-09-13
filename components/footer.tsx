@@ -5,9 +5,10 @@ import { apps } from "@/content/apps";
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
   const bizLine = [
-    `상호 ${site.name}`,
+    `상호 ${site.name} (${site.legalNameEn})`,
     representative && `대표 ${representative}`,
     `사업자등록번호 ${registrationNumber}`,
+    `이메일 ${site.email}`,
     address,
   ]
     .filter(Boolean)
@@ -55,6 +56,14 @@ export default function Footer() {
                 >
                   {site.email}
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/privacy/"
+                  className="text-muted transition-colors hover:text-ink"
+                >
+                  개인정보처리방침
+                </Link>
               </li>
             </ul>
           </div>

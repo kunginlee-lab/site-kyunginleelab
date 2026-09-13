@@ -11,5 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/${app.slug}/`,
       lastModified: new Date(),
     })),
+    { url: `${site.url}/privacy/`, lastModified: new Date() },
   ];
 }
