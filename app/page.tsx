@@ -38,8 +38,8 @@ export default function Home() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              {site.name}은 매일 반복되는 일을 사진 한 장, 탭 한 번으로 줄이는
-              모바일 제품을 만드는 소프트웨어 스튜디오입니다.
+              {site.name}은 복잡하고 번거로운 일상을 가장 단순한 형태로
+              바꾸는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.
             </p>
             <div className="mt-11 flex flex-wrap gap-3">
               <a
