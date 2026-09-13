@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #faf9f6;
+  --bg: #fafaf7;
   --surface: #ffffff;
-  --ink: #1b1d19;
-  --muted: #626759;
-  --line: #e7e5de;
-  --accent: #1f7a4c;
-  --accent-ink: #175e3b;
-  --accent-soft: #eaf4ee;
+  --ink: #141713;
+  --muted: #5c6156;
+  --line: #e6e5de;
+  --accent: #10684a;
+  --accent-ink: #0d5a40;
+  --accent-soft: #e9f2ec;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131511;
-    --surface: #1b1e19;
-    --ink: #e9ebe4;
-    --muted: #9ba295;
-    --line: #2b2f28;
-    --accent: #55b381;
-    --accent-ink: #7ccd9f;
-    --accent-soft: #1d2b22;
+    --bg: #0d0f0c;
+    --surface: #151814;
+    --ink: #ecede8;
+    --muted: #979d90;
+    --line: #262a23;
+    --accent: #3ea076;
+    --accent-ink: #6cc39a;
+    --accent-soft: #182b20;
   }
 }
 
@@ -53,4 +53,24 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
+}
+
+/* 히어로 배경 — 은은한 상단 글로우 하나만. 요란하지 않게. */
+.hero-bg {
+  background:
+    radial-gradient(
+      720px 360px at 50% -80px,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      transparent 70%
+    ),
+    var(--bg);
+}
+
+/* 섹션 상단 소제목 (eyebrow) */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
 }

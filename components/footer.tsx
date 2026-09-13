@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { site } from "@/site.config";
+import { apps } from "@/content/apps";
 
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
@@ -12,25 +14,58 @@ export default function Footer() {
     .join(" · ");
 
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto max-w-5xl space-y-3 px-5 py-10 text-sm text-muted">
-        <p className="font-semibold text-ink">
-          {site.name}{" "}
-          <span className="font-normal text-muted">{site.nameEn}</span>
-        </p>
-        <p>{bizLine}</p>
-        <p>
-          이메일{" "}
-          <a
-            href={`mailto:${site.email}`}
-            className="underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-          >
-            {site.email}
-          </a>
-        </p>
-        <p className="pt-2 text-xs">
-          © {new Date().getFullYear()} {site.name}. All rights reserved.
-        </p>
+    <footer className="border-t border-line bg-surface">
+      <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className="grid gap-10 sm:grid-cols-3">
+          <div>
+            <p className="text-lg font-extrabold tracking-tight">{site.name}</p>
+            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+              {site.nameEn}
+            </p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+              {site.tagline}.
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">
+              Products
+            </p>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {apps.map((app) => (
+                <li key={app.slug}>
+                  <Link
+                    href={`/${app.slug}/`}
+                    className="text-muted transition-colors hover:text-ink"
+                  >
+                    {app.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">
+              Contact
+            </p>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              <li>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-muted transition-colors hover:text-ink"
+                >
+                  {site.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mt-12 space-y-2 border-t border-line pt-6 text-xs text-muted">
+          <p>{bizLine}</p>
+          <p>
+            © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
+            rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );

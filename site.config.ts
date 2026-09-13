@@ -7,6 +7,7 @@
  *  - nameEn: 영문 상호 확정 시 교체 (D-U-N-S 신청서·도메인과 반드시 동일 표기)
  *  - url: 커스텀 도메인 연결 후 실제 도메인으로 교체
  */
+// 앱 목록·제품 페이지 데이터는 content/apps.ts 에서 관리합니다.
 export const site = {
   name: "경인리랩",
   nameEn: "Gyeongin ReLab", // TODO: D-U-N-S 신청 전 영문 표기 확정
@@ -18,14 +19,4 @@ export const site = {
     representative: "", // TODO: 대표자 성명
     address: "", // TODO: 사업장 주소
   },
-} as const;
-
-export const calosnap = {
-  name: "CaloSnap",
-  tagline: "사진 한 장으로 기록하는 칼로리",
-  short:
-    "식사 사진 한 장이면 끝. AI가 칼로리와 탄단지를 자동으로 계산해 기록해요.",
-  playUrl: "", // TODO: 프로덕션 출시 후 Play 스토어 링크
-  privacyUrl: "https://calosnap-app-2026.web.app/privacy.html",
-  deleteAccountUrl: "https://calosnap-app-2026.web.app/delete-account.html",
 } as const;
