@@ -42,7 +42,8 @@ export default function ScrollShowcase({
 
   return (
     <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-6 sm:gap-10 md:grid-cols-2 md:gap-16">
-      <div className="sticky top-24 self-start md:top-28">
+      {/* 화면 높이만큼 잡고 세로 중앙 정렬 — 옆의 설명(min-h 기준 중앙)과 눈높이가 맞는다 */}
+      <div className="sticky top-0 flex h-screen items-center self-start">
         <div className="relative mx-auto aspect-[9/19.5] w-full max-w-[150px] overflow-hidden rounded-[28px] border-[5px] border-ink/85 bg-black shadow-2xl shadow-black/30 sm:max-w-[220px] sm:rounded-[36px] sm:border-[6px] md:max-w-[280px] md:rounded-[44px]">
           {screens.map((s, i) => (
             <Image
