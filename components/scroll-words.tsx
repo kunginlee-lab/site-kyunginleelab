@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * 문장을 화면 중앙에 고정해 두고, 긴 섹션(scrollLength × 화면 높이)을 스크롤하는 동안
- * 단어가 차례로 밝아진다 (Apple 스타일). 투명도만 바뀌므로 reduced-motion 과 무관하게 동작.
+ * 단어가 차례로 떠오르며 선명해진다 (Apple 스타일). `**단어**` 로 감싼 단어는 켜질 때 액센트 색.
+ * 투명도·위치만 바뀌므로 reduced-motion 과 무관하게 동작.
  */
 export default function ScrollWords({
   text,
   className = "",
-  scrollLength = 1.8,
+  scrollLength = 2.2,
 }: {
   text: string;
   className?: string;
@@ -39,24 +40,62 @@ export default function ScrollWords({
     };
   }, []);
 
-  const words = text.split(" ");
+  const words = text.split(" ").map((raw) => {
+    const highlight = raw.startsWith("**") && raw.endsWith("**");
+    return { word: highlight ? raw.slice(2, -2) : raw, highlight };
+  });
+  const n = words.length;
+
   return (
     <div ref={ref} style={{ height: `${scrollLength * 100}vh` }}>
-      <div className="sticky top-0 flex min-h-screen items-center">
-        <p className={className}>
-          {words.map((w, i) => {
-            const t = Math.min(1, Math.max(0, progress * (words.length + 1) - i));
-            return (
-              <span
-                key={`${w}-${i}`}
-                style={{ opacity: 0.14 + 0.86 * t, transition: "opacity 120ms linear" }}
-              >
-                {w}
-                {i < words.length - 1 ? " " : ""}
-              </span>
-            );
-          })}
-        </p>
+      <div className="relative sticky top-0 flex min-h-screen items-center overflow-hidden">
+        {/* 진행도에 따라 번지며 오른쪽으로 흐르는 글로우 */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-1/4 inset-y-0"
+          style={{
+            background:
+              "radial-gradient(52% 60% at 30% 50%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%)",
+            opacity: 0.25 + progress * 0.75,
+            transform: `translateX(${progress * 28}%) scale(${0.8 + progress * 0.5})`,
+            transition: "transform 200ms linear, opacity 200ms linear",
+          }}
+        />
+        <div className="relative w-full">
+          <p className={className}>
+            {words.map(({ word, highlight }, i) => {
+              const raw = Math.min(1, Math.max(0, progress * (n + 1) - i));
+              const t = raw * raw * (3 - 2 * raw); // smoothstep
+              return (
+                <span key={`${word}-${i}`}>
+                  <span
+                    className="inline-block"
+                    style={{
+                      opacity: 0.1 + 0.9 * t,
+                      transform: `translateY(${(1 - t) * 0.45}em)`,
+                      filter: `blur(${(1 - t) * 7}px)`,
+                      color:
+                        highlight && t > 0.55 ? "var(--accent-ink)" : undefined,
+                      transition:
+                        "opacity 160ms linear, transform 260ms cubic-bezier(0.16,1,0.3,1), filter 260ms linear, color 400ms ease",
+                    }}
+                  >
+                    {word}
+                  </span>
+                  {i < n - 1 ? " " : ""}
+                </span>
+              );
+            })}
+          </p>
+          {/* 진행 라인 */}
+          <div
+            className="mt-10 h-px w-full max-w-xl origin-left bg-accent/60 sm:mt-14"
+            style={{
+              transform: `scaleX(${progress})`,
+              transition: "transform 200ms linear",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
