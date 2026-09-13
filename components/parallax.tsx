@@ -19,7 +19,7 @@ export default function Parallax({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // OS "동작 줄이기" 설정과 무관하게 동작 — Windows 애니메이션 끄기가 흔해서
     const update = () => {
       const y = window.scrollY;
       el.style.transform = `translate3d(0, ${y * speed}px, 0)`;

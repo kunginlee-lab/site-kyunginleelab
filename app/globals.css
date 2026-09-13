@@ -96,14 +96,6 @@ body::before {
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .js .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
 /* 히어로 배경 — 은은한 상단 글로우 하나만. 요란하지 않게. */
 .hero-bg {
   background:
