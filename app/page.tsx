@@ -151,8 +151,7 @@ export default function Home() {
             <p className="leading-relaxed text-muted">
               {site.name}({site.nameEn})은 2026년 경기도 수원에서 시작한
               소프트웨어 스튜디오입니다. 규모를 키우는 것보다 제품 하나하나의
-              완성도와 사용자의 신뢰를 쌓는 일을 우선합니다. 모든 제품은 설계
-              단계에서부터 개인정보 최소 수집 원칙을 따릅니다.
+              완성도와 사용자의 신뢰를 쌓는 일을 우선합니다.
             </p>
           </Reveal>
         </div>
