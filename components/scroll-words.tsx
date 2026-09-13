@@ -22,25 +22,20 @@ export default function ScrollWords({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let raf = 0;
+    // rAF 없이 스크롤 이벤트에서 바로 계산 — 백그라운드 탭·저사양에서 rAF가 멈춰도 동작
     const update = () => {
-      raf = 0;
       const r = el.getBoundingClientRect();
       const travel = r.height - window.innerHeight;
       // 섹션 상단이 화면 위로 올라간 만큼이 진행도. 85% 지점에서 완성되게 해 잠시 완성본을 보여준다
       const p = travel > 0 ? -r.top / travel / 0.85 : 1;
       setProgress(Math.min(1, Math.max(0, p)));
     };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
   }, []);
 

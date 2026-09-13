@@ -20,22 +20,14 @@ export default function Parallax({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
     const update = () => {
-      raf = 0;
       const y = window.scrollY;
       el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
       el.style.opacity = String(Math.max(0, 1 - y / fadeAt));
     };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
   }, [speed, fadeAt]);
 
   return (
