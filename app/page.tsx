@@ -72,7 +72,7 @@ export default function Home() {
 
       {/* Statement — 스크롤하면 단어가 차례로 밝아진다 */}
       <section className="border-y border-line bg-surface/70">
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-36">
+        <div className="mx-auto max-w-6xl px-6">
           <ScrollWords
             className="max-w-4xl text-2xl font-bold leading-snug tracking-tight sm:text-4xl sm:leading-snug md:text-5xl md:leading-tight"
             text="기능을 더하는 일보다 덜어내는 일에 시간을 씁니다. 설명이 필요 없고, 데이터를 요구하지 않고, 매일 한 번의 동작으로 끝나는 것. 그게 우리가 생각하는 좋은 소프트웨어입니다."
