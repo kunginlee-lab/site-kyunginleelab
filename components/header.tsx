@@ -18,12 +18,12 @@ export default function Header() {
             {site.nameEn}
           </span>
         </Link>
-        <nav className="flex items-center gap-7 text-sm font-medium">
+        <nav className="flex items-center gap-4 text-sm font-medium sm:gap-7">
           {nav.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className="hidden text-muted transition-colors hover:text-ink sm:inline"
+              className="text-muted transition-colors hover:text-ink"
             >
               {n.label}
             </Link>
