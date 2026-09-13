@@ -5,15 +5,13 @@ import LogoMark from "@/components/logo";
 
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
-  const bizLine = [
+  const bizLines = [
     `상호 ${site.name} (${site.legalNameEn})`,
     representative && `대표 ${representative}`,
     `사업자등록번호 ${registrationNumber}`,
     `이메일 ${site.email}`,
-    address,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+    address && `주소 ${address}`,
+  ].filter(Boolean) as string[];
 
   return (
     <footer className="border-t border-line bg-surface">
@@ -70,9 +68,11 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 space-y-2 border-t border-line pt-6 text-xs text-muted">
-          <p>{bizLine}</p>
-          <p>
+        <div className="mt-12 space-y-1 border-t border-line pt-6 text-xs leading-relaxed text-muted">
+          {bizLines.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
+          <p className="pt-3">
             © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
             rights reserved.
           </p>
