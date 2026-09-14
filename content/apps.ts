@@ -11,6 +11,7 @@
 
 import type { AppLegal } from "./legal";
 import { calosnapLegal } from "./legal/calosnap";
+import { myvoiceLegal } from "./legal/myvoice";
 
 export type AppEntry = {
   slug: string;
@@ -35,6 +36,8 @@ export type AppEntry = {
   /** 외부 문서 링크가 따로 있을 때만 */
   legalLinks?: { label: string; url: string }[];
   hasOgImage?: boolean; // public/apps/<slug>/og.png 존재 여부
+  /** schema.org SoftwareApplication 의 applicationCategory. 비우면 HealthApplication */
+  category?: string;
 };
 
 export const apps: AppEntry[] = [
@@ -100,6 +103,46 @@ export const apps: AppEntry[] = [
       ],
     },
     legal: calosnapLegal,
+    hasOgImage: true,
+  },
+  {
+    slug: "myvoice",
+    name: "MyVoice",
+    tagline: "내 목소리로 말하고, 내 목소리로 부르는 노래",
+    short:
+      "20분 녹음이면 내 목소리 모델이 생깁니다. 글을 내 목소리로 읽어 주고, 좋아하는 노래를 내 목소리로 다시 부릅니다.",
+    status: "coming-soon",
+    category: "MultimediaApplication",
+    keywords: ["목소리", "음성 합성", "TTS", "노래 변환", "AI 커버", "보컬", "노래방", "녹음", "내 목소리", "마이보이스", "RVC"],
+    screens: [
+      { file: "screen-1.webp", alt: "변환된 노래 재생 화면 — 앨범 디스크와 목소리·반주·잔향·키 이펙트 조절" },
+      { file: "screen-2.webp", alt: "노래 학습·변환 화면 — 노래 목소리 모델 선택과 노래 파일 선택" },
+      { file: "screen-3.webp", alt: "내 목소리 만들기 — 녹음 진행률과 학습 시작 버튼" },
+      { file: "screen-4.webp", alt: "노래 변환 진행 화면 — 예상 시간과 대기열" },
+    ],
+    features: [
+      {
+        emoji: "🎤",
+        title: "녹음 20분이면 내 목소리가 생깁니다",
+        body: "대본을 소리 내어 읽으면 됩니다. 녹음이 모이면 버튼 하나로 GPU 학습이 시작되고, 앱을 꺼도 계속됩니다. 끝나면 모델이 자동으로 설치되어 바로 쓸 수 있습니다.",
+      },
+      {
+        emoji: "🎧",
+        title: "좋아하는 노래를 내 목소리로",
+        body: "곡을 고르면 원곡 보컬을 분리해 내 목소리로 바꿔 줍니다. 반주는 원곡 그대로, 키를 바꾸면 반주도 따라옵니다. 두 목소리로 번갈아 부르거나 화음을 얹을 수도 있습니다.",
+      },
+      {
+        emoji: "🎚",
+        title: "들으면서 바로 조절합니다",
+        body: "변환된 곡은 내 목소리·반주·잔향·키를 재생 중에 실시간으로 조절할 수 있습니다. 앨범 디스크 화면에서 넘기며 듣고, 완성본은 파일로 공유합니다.",
+      },
+      {
+        emoji: "🔒",
+        title: "녹음은 내 폰에, 처리는 작업할 때만",
+        body: "녹음·모델·변환곡은 기기 안에 저장됩니다. 학습과 변환을 실행할 때만 그 작업의 파일이 암호화되어 서버로 가고, 처리가 끝나면 7일 안에 자동 삭제됩니다. 말하기(음성 합성)는 기기 안에서만 이루어집니다.",
+      },
+    ],
+    legal: myvoiceLegal,
     hasOgImage: true,
   },
 ];

@@ -49,7 +49,7 @@ export default async function AppPage({ params }: Props) {
     description: app.short,
     url: `${site.url}/${app.slug}/`,
     image: `${site.url}${appIcon(app)}`,
-    applicationCategory: "HealthApplication",
+    applicationCategory: app.category ?? "HealthApplication",
     operatingSystem: "Android",
     ...(app.playUrl && { installUrl: app.playUrl }),
     offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
