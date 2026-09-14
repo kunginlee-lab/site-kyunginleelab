@@ -69,9 +69,9 @@ export default function ScrollWords({
           className="pointer-events-none absolute -inset-x-1/4 inset-y-0"
           style={{
             background:
-              "radial-gradient(40% 55% at 35% 50%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%)",
+              "radial-gradient(40% 55% at 50% 50%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%)",
             opacity: 0.25 + pr * 0.75,
-            transform: `translateX(${pr * 20}%) scale(${0.8 + pr * 0.5})`,
+            transform: `translateX(${(pr - 0.5) * 16}%) scale(${0.8 + pr * 0.5})`,
             transition: "transform 200ms linear, opacity 200ms linear",
           }}
         />
@@ -110,9 +110,9 @@ export default function ScrollWords({
                 );
               })}
             </p>
-            {/* 진행 바 — 문장과 같은 폭, 끝까지 차오른다 */}
+            {/* 진행 바 — 문장과 같은 폭, 중앙에서 양쪽으로 끝까지 차오른다 */}
             <div
-              className="mt-10 h-px w-full origin-left bg-accent/60 sm:mt-14"
+              className="mt-12 h-px w-full origin-center bg-accent/60 sm:mt-16"
               style={{
                 transform: `scaleX(${pr})`,
                 transition: "transform 200ms linear",

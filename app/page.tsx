@@ -73,7 +73,8 @@ export default function Home() {
       {/* Statement — 스크롤하면 단어가 차례로 밝아진다 */}
       <section className="band">
         <ScrollWords
-          className="text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25] md:text-6xl md:leading-[1.2]"
+          maxWidth="mx-auto max-w-5xl text-center"
+          className="text-3xl font-extrabold leading-[1.5] tracking-tight sm:text-5xl sm:leading-[1.45] md:text-6xl md:leading-[1.4]"
           text="기능을 더하는 일보다 **덜어내는** 일에 시간을 씁니다. 설명이 필요 없고, 데이터를 요구하지 않고, 매일 **한** **번의** **동작으로** 끝나는 것. 그게 우리가 생각하는 **좋은** **소프트웨어입니다.**"
         />
       </section>
