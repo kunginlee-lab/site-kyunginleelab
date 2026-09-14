@@ -5,14 +5,15 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 /**
  * 문장을 화면 중앙에 고정해 두고, 긴 섹션(scrollLength × 화면 높이)을 스크롤하는 동안
  * 단어가 차례로 떠오르며 선명해진다 (Apple 스타일). `**단어**` 로 감싼 단어는 켜질 때 액센트 색.
- * 문장이 완성된 뒤 더 내리면 문장이 물러나고 outro(예: 회사 로고)가 떠올랐다가 사라진다.
+ * 문장이 완성된 뒤 더 내리면 문장이 물러나고 outro(예: 회사 로고)가 떠오른다.
+ * outro 는 섹션이 화면 밖으로 밀려나는 동안 녹아 사라진다 — 빈 화면이 스크롤되는 구간이 없다.
  *
- * 진행도 t (0 → 1, 스티키 구간 전체):
- *   0    ~ 0.5   단어가 차례로 켜짐 (진행 바도 같이)
- *   0.5  ~ 0.6   완성된 문장을 잠시 보여줌
- *   0.6  ~ 0.7   문장 퇴장 · outro 등장
- *   0.7  ~ 0.86  outro 유지
- *   0.86 ~ 1     outro 퇴장
+ * 고정 구간 진행도 t (0 → 1):
+ *   0    ~ 0.55  단어가 차례로 켜짐 (진행 바도 같이)
+ *   0.55 ~ 0.6   완성된 문장을 잠시 보여줌
+ *   0.6  ~ 0.7   문장 퇴장 · outro 등장 (0.62 ~ 0.76)
+ *   0.76 ~ 1     outro 유지
+ * 그 뒤 섹션이 위로 밀려나는 첫 절반 동안 outro 가 사라진다.
  *
  * - 스크롤 위치는 단어의 켜짐/꺼짐만 정하고, 실제 움직임은 CSS 트랜지션(.word)이 맡는다
  * - 서버 렌더·JS 없는 환경에서는 문장이 그대로 보인다 (마운트 후에만 효과 적용)
@@ -22,7 +23,7 @@ export default function ScrollWords({
   text,
   className = "",
   maxWidth = "max-w-5xl",
-  scrollLength = 2.6,
+  scrollLength = 2.3,
   outro,
 }: {
   text: string;
@@ -31,16 +32,17 @@ export default function ScrollWords({
   maxWidth?: string;
   /** 섹션 높이 — 화면 높이의 배수. 클수록 천천히 진행 */
   scrollLength?: number;
-  /** 문장이 끝난 뒤 떠올랐다 사라질 내용 (없으면 문장 완성에서 끝) */
+  /** 문장이 끝난 뒤 떠오를 내용 (없으면 문장 완성에서 끝) */
   outro?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [t, setT] = useState<number | null>(null);
+  const [st, setSt] = useState<{ t: number; leave: number } | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     let raf = 0;
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
     const measure = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
@@ -49,8 +51,10 @@ export default function ScrollWords({
       // 섹션 상단이 화면 70% 지점을 지날 때 시작 → 스티키가 끝나는 지점에서 1
       const start = vh * 0.7;
       const end = -travel;
-      const p = start === end ? 1 : (start - r.top) / (start - end);
-      setT(Math.min(1, Math.max(0, p)));
+      const t = start === end ? 1 : clamp((start - r.top) / (start - end));
+      // 섹션 바닥이 화면 아래로 올라온 뒤 화면 절반을 지나는 동안 0 → 1
+      const leave = clamp((vh - r.bottom) / (vh * 0.5));
+      setSt({ t, leave });
     };
     const schedule = () => {
       if (!raf) raf = requestAnimationFrame(measure);
@@ -70,16 +74,15 @@ export default function ScrollWords({
     return { word: highlight ? raw.slice(2, -2) : raw, highlight };
   });
   const n = words.length;
-  const mounted = t !== null;
-  const tt = t ?? 0.55; // 마운트 전: 완성된 문장
+  const mounted = st !== null;
+  const tt = st?.t ?? 0.58; // 마운트 전: 완성된 문장
 
   const phase = (a: number, b: number) => Math.min(1, Math.max(0, (tt - a) / (b - a)));
-  // 빈 화면 꼬리가 짧도록 outro 는 거의 끝까지 유지하고 마지막 8% 에서만 사라진다
-  const wordsEnd = outro ? 0.5 : 0.85;
+  const wordsEnd = outro ? 0.55 : 0.85;
   const pWords = phase(0, wordsEnd);
-  const pExit = outro ? phase(0.57, 0.66) : 0; // 문장 퇴장
-  const pIn = outro ? phase(0.58, 0.7) : 0; // outro 등장
-  const pOut = outro ? phase(0.92, 1) : 0; // outro 퇴장
+  const pExit = outro ? phase(0.6, 0.7) : 0; // 문장 퇴장
+  const pIn = outro ? phase(0.62, 0.76) : 0; // outro 등장
+  const pOut = outro ? (st?.leave ?? 0) : 0; // outro 퇴장 — 섹션이 밀려나는 동안
   const outroOpacity = pIn * (1 - pOut);
 
   return (
@@ -131,14 +134,14 @@ export default function ScrollWords({
           </div>
         </div>
 
-        {/* outro — 문장이 물러난 자리에 떠올랐다가 사라진다 */}
+        {/* outro — 문장이 물러난 자리에 떠올랐다가, 섹션이 밀려날 때 녹아 사라진다 */}
         {outro && (
           <div
             aria-hidden={outroOpacity < 0.05}
             className="pointer-events-none absolute inset-0 flex items-center justify-center will-change-[transform,opacity]"
             style={{
               opacity: outroOpacity,
-              transform: `translateY(${(1 - pIn) * 28 - pOut * 20}px) scale(${0.92 + pIn * 0.08})`,
+              transform: `translateY(${(1 - pIn) * 28 - pOut * 24}px) scale(${0.92 + pIn * 0.08})`,
               filter: `blur(${(1 - pIn) * 8 + pOut * 6}px)`,
             }}
           >

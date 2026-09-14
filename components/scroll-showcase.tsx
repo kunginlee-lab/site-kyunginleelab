@@ -95,8 +95,8 @@ export default function ScrollShowcase({
   return (
     <div className="md:grid md:grid-cols-2 md:gap-16">
       {/* 모바일: 상단 고정, 작게. 데스크톱: 화면 높이 컬럼 안에서 세로 중앙 */}
-      {/* 모바일 배경: 82% 까지 불투명 → 지나가는 이전 설명이 폰 뒤로 비치지 않는다 */}
-      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-[linear-gradient(to_bottom,var(--bg)_82%,transparent)] pb-10 pt-4 md:top-0 md:h-svh md:items-center md:bg-none md:p-0">
+      {/* 모바일 배경: 90% 까지 불투명 → 지나가는 이전 설명이 폰 뒤로 비치지 않는다 */}
+      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-[linear-gradient(to_bottom,var(--bg)_90%,transparent)] pb-10 pt-4 md:top-0 md:h-svh md:items-center md:bg-none md:p-0">
         <div className="phone-float w-[42vw] max-w-[180px] sm:max-w-[210px] md:w-full md:max-w-[310px]">
           <div ref={phone} className="phone-3d relative">
             {/* 바닥 그림자 */}
