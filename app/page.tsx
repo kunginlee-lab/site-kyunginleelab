@@ -129,13 +129,15 @@ export default function Home() {
 
       {/* Search — 앱이 많아져도 바로 찾도록 */}
       <section id="search" className="scroll-mt-20">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-6 py-20 text-center sm:py-28">
           <Reveal>
-            <p className="eyebrow mb-3">Search</p>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              찾는 앱이 있나요?
+            <p className="eyebrow mb-5">Search</p>
+            <h2 className="mx-auto max-w-3xl text-4xl font-extrabold leading-[1.3] tracking-tight sm:text-6xl sm:leading-[1.25]">
+              오늘은 무엇을
+              <br />
+              가볍게 할까요?
             </h2>
-            <div className="mt-8 max-w-2xl">
+            <div className="mx-auto mt-10 max-w-2xl text-left">
               <AppSearch apps={searchApps} />
             </div>
           </Reveal>

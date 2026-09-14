@@ -94,7 +94,7 @@ export default function AppSearch({ apps }: { apps: SearchApp[] }) {
 
       <div aria-live="polite" className="mt-4 min-h-6">
         {terms.length > 0 && results.length === 0 && (
-          <p className="px-2 text-sm text-muted">
+          <p className="px-2 text-center text-sm text-muted">
             &ldquo;{q.trim()}&rdquo;에 맞는 앱이 아직 없습니다.
           </p>
         )}
