@@ -95,8 +95,13 @@ await send("Network.setCacheDisabled", { cacheDisabled: true });
 await send("Page.addScriptToEvaluateOnNewDocument", {
   source: `
     window.__lcp = 0;
+    window.__lcpEl = '';
     new PerformanceObserver((l) => {
-      for (const e of l.getEntries()) window.__lcp = e.startTime;
+      for (const e of l.getEntries()) {
+        window.__lcp = e.startTime;
+        const el = e.element;
+        window.__lcpEl = e.url || (el ? el.tagName + (el.className ? '.' + String(el.className).split(' ')[0] : '') + ' — ' + (el.textContent || '').trim().slice(0, 40) : '?');
+      }
     }).observe({ type: 'largest-contentful-paint', buffered: true });
     window.__cls = 0;
     new PerformanceObserver((l) => {
@@ -126,6 +131,7 @@ for (const r of list) byType[r.type] = (byType[r.type] ?? 0) + r.bytes;
 
 const metrics = await evaluate(`JSON.stringify({
   lcp: Math.round(window.__lcp),
+  lcpEl: window.__lcpEl,
   cls: +(window.__cls||0).toFixed(3),
   fcp: Math.round((performance.getEntriesByName('first-contentful-paint')[0]||{}).startTime||0),
   domContentLoaded: Math.round(performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart),

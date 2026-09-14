@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { HeroVideo } from "@/content/hero-videos";
 
@@ -106,11 +107,16 @@ export default function HeroVideoBackground({
 
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* 포스터는 항상 깔아 둔다 — 영상을 받지 않는 회선에서도 배경이 비지 않는다 */}
+      {/* 포스터는 항상 깔아 둔다 — 영상을 받지 않는 회선에서도 배경이 비지 않는다.
+          CSS 배경이 아니라 이미지로 두어야 브라우저가 HTML 단계에서 발견해 먼저 받는다 (LCP) */}
       {poster && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${poster})` }}
+        <Image
+          src={poster}
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover"
         />
       )}
       {/* 영상은 시작 신호가 온 뒤에만 DOM 에 넣는다 — 그전에는 요청조차 나가지 않는다 */}
