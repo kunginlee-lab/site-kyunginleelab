@@ -19,7 +19,10 @@ const MAX_RESULTS = 6;
 /** 검색어와 일치하는 부분을 강조 */
 function mark(text: string, terms: string[]): ReactNode {
   if (terms.length === 0) return text;
-  const re = new RegExp(`(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "gi");
+  const re = new RegExp(
+    `(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+    "gi",
+  );
   return text.split(re).map((part, i) =>
     terms.some((t) => part.toLowerCase() === t) ? (
       <mark key={i} className="bg-transparent text-accent-ink">
@@ -38,7 +41,10 @@ export default function AppSearch({ apps }: { apps: SearchApp[] }) {
   const [q, setQ] = useState("");
   const inputId = useId();
   const query = q.trim().toLowerCase();
-  const terms = useMemo(() => (query ? query.split(/\s+/).filter(Boolean) : []), [query]);
+  const terms = useMemo(
+    () => (query ? query.split(/\s+/).filter(Boolean) : []),
+    [query],
+  );
 
   const results = useMemo(() => {
     if (terms.length === 0) return [];
@@ -57,39 +63,42 @@ export default function AppSearch({ apps }: { apps: SearchApp[] }) {
       <label htmlFor={inputId} className="sr-only">
         앱 검색
       </label>
-      <div className="glass flex items-center gap-3 rounded-full border border-line px-5 py-3 transition-colors focus-within:border-accent">
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="h-5 w-5 shrink-0 text-muted"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
-        <input
-          id={inputId}
-          type="search"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="앱 이름이나 하는 일로 찾기 — 예: 칼로리, 사진"
-          autoComplete="off"
-          enterKeyHint="search"
-          className="w-full bg-transparent text-base outline-none placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
-        />
-        {q && (
-          <button
-            type="button"
-            onClick={() => setQ("")}
-            aria-label="검색어 지우기"
-            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-line text-xs text-muted transition-colors hover:text-ink"
+      {/* 도는 그라데이션 링(search-shell) 안에 실제 입력 칸(search-inner) */}
+      <div className="search-shell">
+        <div className="search-inner flex items-center gap-4 px-6 py-4 sm:py-5">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="h-6 w-6 shrink-0 text-muted"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
           >
-            ✕
-          </button>
-        )}
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          <input
+            id={inputId}
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="앱 이름이나 하는 일로 찾기 — 예: 칼로리, 사진"
+            autoComplete="off"
+            enterKeyHint="search"
+            className="w-full bg-transparent text-base outline-none placeholder:text-muted sm:text-lg [&::-webkit-search-cancel-button]:hidden"
+          />
+          {q && (
+            <button
+              type="button"
+              onClick={() => setQ("")}
+              aria-label="검색어 지우기"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-line text-xs text-muted transition-colors hover:text-ink"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       <div aria-live="polite" className="mt-4 min-h-6">
@@ -101,7 +110,11 @@ export default function AppSearch({ apps }: { apps: SearchApp[] }) {
         {results.length > 0 && (
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((app, i) => (
-              <li key={app.slug} className="pop-in" style={{ animationDelay: `${i * 40}ms` }}>
+              <li
+                key={app.slug}
+                className="pop-in"
+                style={{ animationDelay: `${i * 40}ms` }}
+              >
                 <Link
                   href={`/${app.slug}/`}
                   className="glass flex items-center gap-4 rounded-2xl border border-line p-4 transition-colors hover:border-accent"

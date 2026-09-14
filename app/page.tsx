@@ -132,12 +132,12 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-20 text-center sm:py-28">
           <Reveal>
             <p className="eyebrow mb-5">Search</p>
-            <h2 className="mx-auto max-w-3xl text-4xl font-extrabold leading-[1.3] tracking-tight sm:text-6xl sm:leading-[1.25]">
+            <h2 className="mx-auto max-w-3xl text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25]">
               오늘은 무엇을
               <br />
               가볍게 할까요?
             </h2>
-            <div className="mx-auto mt-10 max-w-2xl text-left">
+            <div className="mx-auto mt-10 max-w-3xl text-left">
               <AppSearch apps={searchApps} />
             </div>
           </Reveal>
