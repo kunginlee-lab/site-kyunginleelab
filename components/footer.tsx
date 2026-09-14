@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
@@ -18,7 +19,8 @@ export default function Footer() {
   return (
     <footer className="footer-bg">
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-20">
-        <div className="grid gap-10 sm:grid-cols-3">
+        {/* 세 블록을 양끝에 붙여 균등 배분 (모바일은 세로 쌓임) */}
+        <div className="flex flex-col gap-10 sm:flex-row sm:justify-between sm:gap-12">
           <div>
             <LogoMark size={36} className="mb-4" />
             <p className="text-lg font-extrabold tracking-tight">{site.name}</p>
@@ -74,21 +76,22 @@ export default function Footer() {
         </div>
         <div className="hairline mt-12" />
         <div className="space-y-1 pt-6 text-xs leading-relaxed text-muted">
-          {/* 한 줄에 · 로 구분, 좁은 화면에선 항목 단위로 줄바꿈 */}
-          <p>
-            {bizLines.map((line, i) => (
-              <span key={line} className="inline-block">
-                {i > 0 && <span className="mx-2 opacity-50">·</span>}
-                {line}
-              </span>
+          {/* 항목과 · 를 전부 flex 자식으로 두고 space-between → 한 줄에 균등 배분. 좁은 화면은 줄바꿈 후 가운데 */}
+          <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-between">
+            {[
+              ...bizLines,
+              <span key="email">
+                이메일{" "}
+                <EmailLink user={emailUser} domain={emailDomain} showAddress>
+                  (JS 필요)
+                </EmailLink>
+              </span>,
+            ].map((item, i) => (
+              <Fragment key={typeof item === "string" ? item : "email"}>
+                {i > 0 && <span className="opacity-50">·</span>}
+                <span className="whitespace-nowrap">{item}</span>
+              </Fragment>
             ))}
-            <span className="inline-block">
-              <span className="mx-2 opacity-50">·</span>
-              이메일{" "}
-              <EmailLink user={emailUser} domain={emailDomain} showAddress>
-                (JS 필요)
-              </EmailLink>
-            </span>
           </p>
           <p className="pt-3">
             © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
