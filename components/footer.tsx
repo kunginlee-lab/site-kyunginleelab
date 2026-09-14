@@ -95,7 +95,7 @@ export default function Footer() {
               </Fragment>
             ))}
           </p>
-          <p className="pt-3">
+          <p className="pt-3 text-center">
             © {new Date().getFullYear()} {site.nameEn}. All rights reserved.
           </p>
         </div>
