@@ -133,6 +133,26 @@ export default function HeroVideoBackground({
 
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* 포스터를 HTML 파싱 초반에 발견시켜 LCP 를 앞당긴다. media 로 화면에 맞는 하나만 받는다.
+          (React 가 link 를 head 로 올려 준다) */}
+      {poster && (
+        <link
+          rel="preload"
+          as="image"
+          href={poster}
+          media={mobilePoster ? "(min-width: 768px)" : undefined}
+          fetchPriority="high"
+        />
+      )}
+      {mobilePoster && (
+        <link
+          rel="preload"
+          as="image"
+          href={mobilePoster}
+          media={MOBILE_QUERY}
+          fetchPriority="high"
+        />
+      )}
       {/* 포스터는 항상 깔아 둔다 — 영상을 받지 않는 회선에서도 배경이 비지 않는다.
           picture + media 로 두어야 브라우저가 HTML 단계에서 화면에 맞는 판본 하나만 골라 먼저 받는다.
           (JS 로 바꾸면 가로판을 받은 뒤 세로판을 또 받게 되고, 그만큼 LCP 가 늦어진다) */}
