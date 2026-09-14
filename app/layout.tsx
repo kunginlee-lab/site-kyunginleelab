@@ -10,9 +10,10 @@ const description = `${site.name}(${site.nameEn})은 프라이버시를 우선�
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  // 제목에는 국문 상호를 넣지 않는다 (링크 미리보기 요청)
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s | ${site.name}`,
+    default: site.tagline,
+    template: `%s — ${site.nameEn}`,
   },
   description,
   keywords: [
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    siteName: site.name,
+    siteName: site.nameEn,
     locale: "ko_KR",
     type: "website",
     url: "/",

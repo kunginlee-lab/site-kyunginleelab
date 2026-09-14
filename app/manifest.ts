@@ -5,8 +5,8 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${site.name} — ${site.tagline}`,
-    short_name: site.name,
+    name: site.tagline,
+    short_name: site.nameEn,
     description: `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`,
     start_url: "/",
     display: "browser",
