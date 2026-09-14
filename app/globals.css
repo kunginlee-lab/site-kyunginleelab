@@ -174,6 +174,79 @@ body::before {
   background: color-mix(in srgb, var(--ink) 60%, transparent);
 }
 
+/* 폰 목업 — 원근·프레임·유리 반사·바닥 그림자로 입체감 */
+.phone-stage {
+  perspective: 1500px;
+}
+.phone-3d {
+  transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.phone-body {
+  position: relative;
+  background: linear-gradient(150deg, #454943 0%, #14170f 38%, #0b0d0a 62%, #2a2e28 100%);
+  box-shadow:
+    0 70px 110px -40px rgba(0, 0, 0, 0.75),
+    0 30px 50px -25px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.7);
+}
+.phone-screen {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+/* 유리 반사 — 왼쪽 위에서 비스듬히 들어오는 빛 */
+.phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.06) 24%,
+    transparent 46%,
+    transparent 100%
+  );
+}
+.phone-btn {
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #4c504a, #1c1f1a);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.7);
+}
+.phone-btn--vol-up {
+  left: -3px;
+  top: 19%;
+  height: 7%;
+}
+.phone-btn--vol-down {
+  left: -3px;
+  top: 28%;
+  height: 7%;
+}
+.phone-btn--power {
+  right: -3px;
+  top: 22%;
+  height: 11%;
+  background: linear-gradient(270deg, #4c504a, #1c1f1a);
+}
+.phone-shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -34px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent);
+  filter: blur(12px);
+  transform: translateZ(-40px);
+}
+
 /* 섹션 상단 소제목 (eyebrow) */
 .eyebrow {
   font-size: 0.75rem;
