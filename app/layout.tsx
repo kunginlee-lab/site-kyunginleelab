@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import "./pretendard.css"; // 자체 호스팅 Pretendard (dynamic subset — 필요한 글자 범위만 내려받는다)
 import "./globals.css";
 import { site } from "@/site.config";
 import Header from "@/components/header";
@@ -33,6 +34,13 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d0f0c" },
+  ],
+};
+
 // 검색엔진용 조직 정보 (Google 지식 패널·리치 결과)
 const organizationLd = {
   "@context": "https://schema.org",
@@ -42,7 +50,6 @@ const organizationLd = {
   legalName: site.legalNameEn,
   url: site.url,
   logo: `${site.url}/brand/logo-mark.png`,
-  email: site.email,
   foundingDate: "2026",
   founder: { "@type": "Person", name: site.business.representative },
   address: {
@@ -73,11 +80,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{
             __html: `document.documentElement.classList.add("js")`,
           }}
-        />
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
         <script
           type="application/ld+json"

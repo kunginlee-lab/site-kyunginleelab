@@ -1,15 +1,20 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
+# 영상·이미지는 파일명이 고정이라 교체가 반영되도록 짧게 (CDN 은 하루, 브라우저는 재검증)
 /videos/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400, must-revalidate
 
 /apps/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400, must-revalidate
 
 /brand/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN

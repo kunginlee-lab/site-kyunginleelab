@@ -2,6 +2,9 @@ import Link from "next/link";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
 import LogoMark from "@/components/logo";
+import EmailLink from "@/components/email-link";
+
+const [emailUser, emailDomain] = site.email.split("@");
 
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
@@ -9,7 +12,6 @@ export default function Footer() {
     `상호 ${site.name} (${site.legalNameEn})`,
     representative && `대표 ${representative}`,
     `사업자등록번호 ${registrationNumber}`,
-    `이메일 ${site.email}`,
     address && `주소 ${address}`,
   ].filter(Boolean) as string[];
 
@@ -50,12 +52,14 @@ export default function Footer() {
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <a
-                  href={`mailto:${site.email}`}
+                <EmailLink
+                  user={emailUser}
+                  domain={emailDomain}
+                  showAddress
                   className="text-muted transition-colors hover:text-ink"
                 >
-                  {site.email}
-                </a>
+                  이메일 문의
+                </EmailLink>
               </li>
               <li>
                 <Link
@@ -72,6 +76,12 @@ export default function Footer() {
           {bizLines.map((line) => (
             <p key={line}>{line}</p>
           ))}
+          <p>
+            이메일{" "}
+            <EmailLink user={emailUser} domain={emailDomain} showAddress>
+              (JS 필요)
+            </EmailLink>
+          </p>
           <p className="pt-3">
             © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
             rights reserved.

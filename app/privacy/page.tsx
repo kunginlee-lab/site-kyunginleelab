@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
+import EmailLink from "@/components/email-link";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
   description: `${site.name}(${site.legalNameEn}) 웹사이트 및 모바일 앱의 개인정보처리방침`,
   alternates: { canonical: "/privacy/" },
+  openGraph: { url: "/privacy/", title: "개인정보처리방침" },
 };
+
+const [emailUser, emailDomain] = site.email.split("@");
 
 // 앱에서 다루는 정보 — 각 앱의 개별 방침과 어긋나지 않게 "기기 내 저장"을 기본으로 둔다.
 const appData = [
@@ -189,12 +193,14 @@ export default function PrivacyPage() {
             <li>개인정보 보호책임자: {site.privacy.officer}</li>
             <li>
               이메일:{" "}
-              <a
-                href={`mailto:${site.email}`}
+              <EmailLink
+                user={emailUser}
+                domain={emailDomain}
+                showAddress
                 className="text-accent-ink underline decoration-line underline-offset-4"
               >
-                {site.email}
-              </a>
+                이메일 문의 (JS 필요)
+              </EmailLink>
             </li>
           </ul>
           <p>

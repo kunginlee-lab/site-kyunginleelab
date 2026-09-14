@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { site } from "@/site.config";
 import LogoMark from "@/components/logo";
+import EmailLink from "@/components/email-link";
 
 const nav = [
   { label: "소개", href: "/#about" },
   { label: "제품", href: "/#apps" },
 ];
+
+const [emailUser, emailDomain] = site.email.split("@");
 
 export default function Header() {
   return (
@@ -30,12 +33,13 @@ export default function Header() {
               {n.label}
             </Link>
           ))}
-          <a
-            href={`mailto:${site.email}`}
+          <EmailLink
+            user={emailUser}
+            domain={emailDomain}
             className="rounded-full bg-ink px-4.5 py-2 text-bg transition-opacity hover:opacity-85"
           >
             문의하기
-          </a>
+          </EmailLink>
         </nav>
       </div>
     </header>

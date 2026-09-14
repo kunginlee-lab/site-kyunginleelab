@@ -10,7 +10,14 @@ const FADE_MS = 1600;
  * 무음·자동재생·인라인 재생. 배경색으로 눌러 연하게 보이는 무음 영상이라
  * prefers-reduced-motion 과 무관하게 재생한다 (OS 애니메이션 끄기 설정이 흔해서).
  */
-export default function HeroVideoBackground({ videos }: { videos: HeroVideo[] }) {
+export default function HeroVideoBackground({
+  videos,
+  poster,
+}: {
+  videos: HeroVideo[];
+  /** 영상 로드 전에 보여줄 정지 이미지 — 첫 화면이 비어 보이지 않게 */
+  poster?: string;
+}) {
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const switching = useRef(false);
@@ -72,6 +79,7 @@ export default function HeroVideoBackground({ videos }: { videos: HeroVideo[] })
             refs.current[i] = el;
           }}
           src={v.src}
+          poster={i === 0 ? poster : undefined}
           muted
           playsInline
           preload={i === 0 ? "auto" : "metadata"}

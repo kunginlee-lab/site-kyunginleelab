@@ -8,6 +8,9 @@ import Parallax from "@/components/parallax";
 import ScrollWords from "@/components/scroll-words";
 import ScrollShowcase from "@/components/scroll-showcase";
 import HeroVideoBackground from "@/components/hero-video";
+import EmailLink from "@/components/email-link";
+
+const [emailUser, emailDomain] = site.email.split("@");
 
 const principles = [
   {
@@ -35,7 +38,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="hero-bg relative overflow-hidden">
-        <HeroVideoBackground videos={heroVideos} />
+        <HeroVideoBackground videos={heroVideos} poster="/videos/hero-poster.jpg" />
         <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pb-40 sm:pt-48">
           <Parallax>
             <Reveal>
@@ -58,12 +61,13 @@ export default function Home() {
                 >
                   제품 보기
                 </a>
-                <a
-                  href={`mailto:${site.email}`}
+                <EmailLink
+                  user={emailUser}
+                  domain={emailDomain}
                   className="glass rounded-full border border-line px-7 py-3.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent-ink"
                 >
                   문의하기
-                </a>
+                </EmailLink>
               </div>
             </Reveal>
           </Parallax>
@@ -206,7 +210,7 @@ export default function Home() {
       </section>
 
       {/* Contact */}
-      <section className="mx-auto max-w-6xl px-6 py-16 text-center sm:py-24">
+      <section id="contact" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-16 text-center sm:py-24">
         <Reveal>
           <p className="eyebrow mb-3">Contact</p>
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
@@ -216,12 +220,14 @@ export default function Home() {
             협업·지원·기타 문의 모두 이메일로 받고 있습니다. 확인 후 빠르게
             답변드리겠습니다.
           </p>
-          <a
-            href={`mailto:${site.email}`}
+          <EmailLink
+            user={emailUser}
+            domain={emailDomain}
+            showAddress
             className="mt-8 inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-85"
           >
-            {site.email}
-          </a>
+            이메일로 문의하기
+          </EmailLink>
         </Reveal>
       </section>
     </>
