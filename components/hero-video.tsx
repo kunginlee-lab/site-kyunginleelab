@@ -5,15 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import type { HeroVideo } from "@/content/hero-videos";
 
 const FADE_MS = 1600;
+const MOBILE_QUERY = "(max-width: 767px)";
 
 /**
- * 영상 세 개가 2MB 가 넘는다. 아래 경우에는 아예 받지 않는다 — 포스터 이미지만으로 화면은 완성된다.
- *  - 좁은 화면(휴대폰): 영상이 글씨 뒤로 거의 가려지는데 셀룰러 데이터 2MB 를 쓴다
- *  - 데이터 절약 모드, 3G 이하 회선
+ * 데이터 절약 모드이거나 3G 이하 회선이면 영상을 받지 않는다 — 포스터만으로 화면은 완성된다.
  * navigator.connection.downlink 는 빠른 회선에서도 1~2 로 보고되는 일이 잦아 기준으로 쓰지 않는다.
  */
 function prefersNoVideo() {
-  if (!window.matchMedia("(min-width: 768px)").matches) return true;
   const c = (
     navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
   ).connection;
@@ -27,21 +25,35 @@ function prefersNoVideo() {
  * 무음·자동재생·인라인 재생. 배경색으로 눌러 연하게 보이는 무음 영상이라
  * prefers-reduced-motion 과 무관하게 재생한다 (OS 애니메이션 끄기 설정이 흔해서).
  *
- * 로딩 순서: 처음에는 poster 만 그리고(preload="none"), 페이지가 다 뜬 뒤에야 영상을 받는다.
- * 영상 세 개가 2MB 가 넘어 첫 화면과 대역폭을 다투면 본문이 늦게 뜨기 때문이다.
+ * 로딩 순서: 처음에는 poster 만 그리고, 페이지가 다 뜬 뒤에야 영상을 붙인다.
+ * 첫 영상만 미리 받고 나머지는 차례가 올 때 받으므로(preload="none"), 잠깐 머무는 방문자는
+ * 첫 영상 하나치만 쓴다. 좁은 화면에서는 세로로 잘라 둔 작은 판본을 쓴다.
  */
 export default function HeroVideoBackground({
   videos,
   poster,
+  mobilePoster,
 }: {
   videos: HeroVideo[];
   /** 영상 로드 전에 보여줄 정지 이미지 — 첫 화면이 비어 보이지 않게 */
   poster?: string;
+  /** 좁은 화면용 세로 포스터 */
+  mobilePoster?: string;
 }) {
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [started, setStarted] = useState(false);
+  // 서버 렌더와 첫 페인트는 가로 기준으로 두고, 마운트 후 실제 화면 폭에 맞춘다
+  const [isMobile, setIsMobile] = useState(false);
   const switching = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY);
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   // 첫 화면(포스터·본문)이 자리를 잡은 뒤 곧바로 영상을 시작한다.
   // 너무 늦게 시작하면 영상이 뒤늦게 그려지면서 LCP 로 잡히므로, 브라우저가 한가해지는 즉시 붙인다.
@@ -118,40 +130,38 @@ export default function HeroVideoBackground({
 
   if (videos.length === 0) return null;
 
+  const posterSrc = (isMobile && mobilePoster) || poster;
+
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* 포스터는 항상 깔아 둔다 — 영상을 받지 않는 회선에서도 배경이 비지 않는다.
           CSS 배경이 아니라 이미지로 두어야 브라우저가 HTML 단계에서 발견해 먼저 받는다 (LCP) */}
-      {poster && (
-        <Image
-          src={poster}
-          alt=""
-          fill
-          sizes="100vw"
-          priority
-          className="object-cover"
-        />
+      {posterSrc && (
+        <Image src={posterSrc} alt="" fill sizes="100vw" priority className="object-cover" />
       )}
       {/* 영상은 시작 신호가 온 뒤에만 DOM 에 넣는다 — 그전에는 요청조차 나가지 않는다 */}
       {started &&
-        videos.map((v, i) => (
-          <video
-            key={v.src}
-            ref={(el) => {
-              refs.current[i] = el;
-            }}
-            src={v.src}
-            poster={poster}
-            muted
-            playsInline
-            preload={i === 0 ? "auto" : "none"}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
-            style={{
-              opacity: i === active ? 1 : 0,
-              transitionDuration: `${FADE_MS}ms`,
-            }}
-          />
-        ))}
+        videos.map((v, i) => {
+          const src = (isMobile && v.mobileSrc) || v.src;
+          return (
+            <video
+              key={src}
+              ref={(el) => {
+                refs.current[i] = el;
+              }}
+              src={src}
+              poster={posterSrc}
+              muted
+              playsInline
+              preload={i === 0 ? "auto" : "none"}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
+              style={{
+                opacity: i === active ? 1 : 0,
+                transitionDuration: `${FADE_MS}ms`,
+              }}
+            />
+          );
+        })}
       {/* 영상을 연하게 — 배경색으로 눌러 텍스트가 항상 읽히게 하고, 아래쪽은 영상이 끝나기 전에 완전히 배경색이 되게 한다 */}
       <div className="absolute inset-0 bg-bg/70" />
       <div className="hero-fade absolute inset-0" />

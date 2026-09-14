@@ -76,7 +76,11 @@ export default function Home() {
       <JsonLd data={productListLd} />
       {/* Hero */}
       <section className="hero-bg relative overflow-hidden">
-        <HeroVideoBackground videos={heroVideos} poster="/videos/hero-poster.jpg" />
+        <HeroVideoBackground
+          videos={heroVideos}
+          poster="/videos/hero-poster.jpg"
+          mobilePoster="/videos/hero-poster-m.jpg"
+        />
         {/* 화면 높이의 90% 를 차지해 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
         <div className="relative mx-auto flex min-h-[90svh] max-w-6xl items-center px-6 py-24">
           <Parallax>
