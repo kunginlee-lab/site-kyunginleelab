@@ -7,19 +7,19 @@ import type { HeroVideo } from "@/content/hero-videos";
 const FADE_MS = 1600;
 
 /**
- * 영상 세 개가 2MB 가 넘는다. 데이터 절약 모드이거나 3G 이하 회선이면 아예 받지 않는다 —
- * 포스터 이미지만으로도 화면은 완성되고, 느린 회선에서 2MB 는 본문 로딩을 밀어낸다.
+ * 영상 세 개가 2MB 가 넘는다. 아래 경우에는 아예 받지 않는다 — 포스터 이미지만으로 화면은 완성된다.
+ *  - 좁은 화면(휴대폰): 영상이 글씨 뒤로 거의 가려지는데 셀룰러 데이터 2MB 를 쓴다
+ *  - 데이터 절약 모드, 3G 이하 회선
+ * navigator.connection.downlink 는 빠른 회선에서도 1~2 로 보고되는 일이 잦아 기준으로 쓰지 않는다.
  */
 function prefersNoVideo() {
+  if (!window.matchMedia("(min-width: 768px)").matches) return true;
   const c = (
-    navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string; downlink?: number };
-    }
+    navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }
   ).connection;
   if (!c) return false;
   if (c.saveData) return true;
-  if (c.effectiveType && ["slow-2g", "2g", "3g"].includes(c.effectiveType)) return true;
-  return typeof c.downlink === "number" && c.downlink > 0 && c.downlink < 2;
+  return !!c.effectiveType && ["slow-2g", "2g", "3g"].includes(c.effectiveType);
 }
 
 /**
