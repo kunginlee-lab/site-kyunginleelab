@@ -180,10 +180,14 @@ export default function Home() {
               만들고 있는 제품
             </h2>
           </Reveal>
-          {/* 앱이 늘어나도 한눈에 — 3열 콤팩트 카드, 출시된 앱부터 */}
-          <div className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 앱이 늘어나도 한눈에 — 최대 3열 카드, 출시된 앱부터. 카드가 적을 땐 가운데로 모인다 */}
+          <div className="mt-10 flex flex-wrap justify-center gap-5 sm:mt-12">
             {appsByStatus.map((app, i) => (
-              <Reveal key={app.slug} delay={Math.min(i, 5) * 90}>
+              <Reveal
+                key={app.slug}
+                delay={Math.min(i, 5) * 90}
+                className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
+              >
                 <Link
                   href={`/${app.slug}/`}
                   className="glass group flex h-full flex-col gap-5 rounded-3xl border border-line p-6 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5"

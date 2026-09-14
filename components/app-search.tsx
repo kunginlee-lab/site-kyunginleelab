@@ -83,7 +83,7 @@ export default function AppSearch({ apps }: { apps: SearchApp[] }) {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="앱 이름이나 하는 일로 찾기 — 예: 칼로리, 사진"
+            placeholder="앱 이름이나 기능으로 찾기"
             autoComplete="off"
             enterKeyHint="search"
             className="w-full bg-transparent text-base outline-none placeholder:text-muted sm:text-lg [&::-webkit-search-cancel-button]:hidden"

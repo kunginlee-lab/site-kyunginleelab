@@ -74,11 +74,12 @@ export default function ScrollWords({
   const tt = t ?? 0.55; // 마운트 전: 완성된 문장
 
   const phase = (a: number, b: number) => Math.min(1, Math.max(0, (tt - a) / (b - a)));
+  // 빈 화면 꼬리가 짧도록 outro 는 거의 끝까지 유지하고 마지막 8% 에서만 사라진다
   const wordsEnd = outro ? 0.5 : 0.85;
   const pWords = phase(0, wordsEnd);
-  const pExit = outro ? phase(0.6, 0.7) : 0; // 문장 퇴장
-  const pIn = outro ? phase(0.6, 0.72) : 0; // outro 등장
-  const pOut = outro ? phase(0.86, 1) : 0; // outro 퇴장
+  const pExit = outro ? phase(0.57, 0.66) : 0; // 문장 퇴장
+  const pIn = outro ? phase(0.58, 0.7) : 0; // outro 등장
+  const pOut = outro ? phase(0.92, 1) : 0; // outro 퇴장
   const outroOpacity = pIn * (1 - pOut);
 
   return (

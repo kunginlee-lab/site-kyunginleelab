@@ -46,6 +46,9 @@ export default function ScrollShowcase({
   }, []);
 
   useEffect(() => {
+    // 활성 판정 띠 — 데스크톱은 화면 중앙(폰 중앙과 같은 높이), 모바일은 상단 고정 폰 아래쪽
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+    const rootMargin = isDesktop ? "-40% 0px -45% 0px" : "-58% 0px -22% 0px";
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -54,8 +57,7 @@ export default function ScrollShowcase({
           }
         }
       },
-      // 뷰포트 세로 중앙 띠를 지나는 단계를 활성으로 본다 (모바일은 폰이 위를 차지하므로 아래쪽 띠)
-      { rootMargin: "-40% 0px -45% 0px", threshold: 0 },
+      { rootMargin, threshold: 0 },
     );
     steps.current.forEach((el) => el && io.observe(el));
     return () => io.disconnect();
@@ -93,8 +95,9 @@ export default function ScrollShowcase({
   return (
     <div className="md:grid md:grid-cols-2 md:gap-16">
       {/* 모바일: 상단 고정, 작게. 데스크톱: 화면 높이 컬럼 안에서 세로 중앙 */}
-      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-gradient-to-b from-bg via-bg/90 to-transparent pb-8 pt-4 md:top-0 md:h-svh md:items-center md:bg-none md:p-0">
-        <div className="phone-float w-[34vw] max-w-[150px] sm:max-w-[200px] md:w-full md:max-w-[310px]">
+      {/* 모바일 배경: 82% 까지 불투명 → 지나가는 이전 설명이 폰 뒤로 비치지 않는다 */}
+      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-[linear-gradient(to_bottom,var(--bg)_82%,transparent)] pb-10 pt-4 md:top-0 md:h-svh md:items-center md:bg-none md:p-0">
+        <div className="phone-float w-[42vw] max-w-[180px] sm:max-w-[210px] md:w-full md:max-w-[310px]">
           <div ref={phone} className="phone-3d relative">
             {/* 바닥 그림자 */}
             <div className="phone-shadow" />
@@ -111,7 +114,7 @@ export default function ScrollShowcase({
                     src={`/apps/${slug}/${s.file}`}
                     alt={s.alt}
                     fill
-                    sizes="(min-width: 768px) 310px, 34vw"
+                    sizes="(min-width: 768px) 310px, 42vw"
                     priority={i === 0}
                     className="object-cover transition-opacity duration-700 ease-in-out"
                     style={{ opacity: i === shotIndex ? 1 : 0 }}

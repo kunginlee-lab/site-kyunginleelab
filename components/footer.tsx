@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Link from "next/link";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
@@ -78,7 +77,7 @@ export default function Footer() {
         </div>
         <div className="hairline mt-12" />
         <div className="space-y-1 pt-6 text-xs leading-relaxed text-muted">
-          {/* 항목과 · 를 전부 flex 자식으로 두고 space-between → 한 줄에 균등 배분. 좁은 화면은 줄바꿈 후 가운데 */}
+          {/* 한 줄에 균등 배분(space-between). 구분점은 항목 앞에 붙여 두어 줄바꿈 때 줄 끝에 홀로 남지 않는다 */}
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-between">
             {[
               ...bizLines,
@@ -88,11 +87,13 @@ export default function Footer() {
                   (JS 필요)
                 </EmailLink>
               </span>,
-            ].map((item, i) => (
-              <Fragment key={typeof item === "string" ? item : "email"}>
-                {i > 0 && <span className="opacity-50">·</span>}
-                <span className="whitespace-nowrap">{item}</span>
-              </Fragment>
+            ].map((item) => (
+              <span
+                key={typeof item === "string" ? item : "email"}
+                className="whitespace-nowrap [&:not(:first-child)]:before:mr-3 [&:not(:first-child)]:before:opacity-50 [&:not(:first-child)]:before:content-['·']"
+              >
+                {item}
+              </span>
             ))}
           </p>
           <p className="pt-3 text-center">
