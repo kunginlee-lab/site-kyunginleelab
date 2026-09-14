@@ -1,0 +1,7 @@
+# https://kyunginleelab.com
+# 도메인이 바뀌면 아래 Sitemap 주소도 함께 수정할 것
+
+User-agent: *
+Allow: /
+
+Sitemap: https://kyunginleelab.com/sitemap.xml
