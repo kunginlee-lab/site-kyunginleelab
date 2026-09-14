@@ -63,7 +63,8 @@ export default function ScrollShowcase({
         </div>
       </div>
 
-      <div>
+      {/* 위아래 17.5dvh 여백: 각 설명(65dvh 박스)의 중앙이 화면 중앙(=폰 중앙)에 올 수 있게 */}
+      <div className="md:py-[17.5dvh]">
         {features.map((f, i) => (
           <div
             key={f.title}

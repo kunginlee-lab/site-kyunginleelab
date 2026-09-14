@@ -72,12 +72,10 @@ export default function Home() {
 
       {/* Statement — 스크롤하면 단어가 차례로 밝아진다 */}
       <section className="band">
-        <div className="mx-auto max-w-6xl px-6">
-          <ScrollWords
-            className="max-w-5xl text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25] md:text-6xl md:leading-[1.2]"
-            text="기능을 더하는 일보다 **덜어내는** 일에 시간을 씁니다. 설명이 필요 없고, 데이터를 요구하지 않고, 매일 **한** **번의** **동작으로** 끝나는 것. 그게 우리가 생각하는 **좋은** **소프트웨어입니다.**"
-          />
-        </div>
+        <ScrollWords
+          className="text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25] md:text-6xl md:leading-[1.2]"
+          text="기능을 더하는 일보다 **덜어내는** 일에 시간을 씁니다. 설명이 필요 없고, 데이터를 요구하지 않고, 매일 **한** **번의** **동작으로** 끝나는 것. 그게 우리가 생각하는 **좋은** **소프트웨어입니다.**"
+        />
       </section>
 
       {/* Principles */}
@@ -183,25 +181,6 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Studio band */}
-      <section className="band">
-        <div className="mx-auto grid max-w-6xl gap-8 px-6 py-16 sm:grid-cols-2 sm:gap-10 sm:py-24">
-          <Reveal>
-            <p className="eyebrow mb-3">Studio</p>
-            <h2 className="text-2xl font-bold leading-snug tracking-tight sm:text-3xl">
-              작지만, 기준은 높게.
-            </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="leading-relaxed text-muted">
-              {site.name}({site.nameEn})은 2026년 경기도 수원에서 시작한
-              소프트웨어 스튜디오입니다. 규모를 키우는 것보다 제품 하나하나의
-              완성도와 사용자의 신뢰를 쌓는 일을 우선합니다.
-            </p>
-          </Reveal>
         </div>
       </section>
 

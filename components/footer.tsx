@@ -74,14 +74,21 @@ export default function Footer() {
         </div>
         <div className="hairline mt-12" />
         <div className="space-y-1 pt-6 text-xs leading-relaxed text-muted">
-          {bizLines.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
+          {/* 한 줄에 · 로 구분, 좁은 화면에선 항목 단위로 줄바꿈 */}
           <p>
-            이메일{" "}
-            <EmailLink user={emailUser} domain={emailDomain} showAddress>
-              (JS 필요)
-            </EmailLink>
+            {bizLines.map((line, i) => (
+              <span key={line} className="inline-block">
+                {i > 0 && <span className="mx-2 opacity-50">·</span>}
+                {line}
+              </span>
+            ))}
+            <span className="inline-block">
+              <span className="mx-2 opacity-50">·</span>
+              이메일{" "}
+              <EmailLink user={emailUser} domain={emailDomain} showAddress>
+                (JS 필요)
+              </EmailLink>
+            </span>
           </p>
           <p className="pt-3">
             © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
