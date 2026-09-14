@@ -76,7 +76,7 @@ export default function Home() {
         <ScrollWords
           maxWidth="mx-auto max-w-5xl text-center"
           className="text-3xl font-extrabold leading-[1.5] tracking-tight sm:text-5xl sm:leading-[1.45] md:text-6xl md:leading-[1.4]"
-          text="더하는 대신 **덜어냅니다.** 설명이 없어도, 데이터를 묻지 않아도, **한** **번의** **동작으로** 충분하도록. 좋은 소프트웨어는 **조용합니다.**"
+          text="더하는 대신 **덜어냅니다.** 설명이 없어도, 데이터를 묻지 않아도, **한** **번의** **동작으로** 충분하도록. 좋은 소프트웨어는 **가볍습니다.**"
         />
       </section>
 
