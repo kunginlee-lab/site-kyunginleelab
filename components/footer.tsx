@@ -35,7 +35,10 @@ export default function Footer() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">
               Products
             </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            {/* 앱이 많아지면 두 단으로 */}
+            <ul
+              className={`mt-4 text-sm [&>li]:mb-2.5 ${apps.length > 4 ? "sm:columns-2 sm:gap-x-8" : ""}`}
+            >
               {apps.map((app) => (
                 <li key={app.slug}>
                   <Link

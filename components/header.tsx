@@ -24,7 +24,7 @@ export default function Header() {
             {site.nameEn}
           </span>
         </Link>
-        <nav className="flex items-center gap-4 text-sm font-medium sm:gap-7">
+        <nav className="flex items-center gap-4 text-[13px] font-medium sm:gap-6">
           {nav.map((n) => (
             <Link
               key={n.href}
@@ -37,7 +37,7 @@ export default function Header() {
           <EmailLink
             user={emailUser}
             domain={emailDomain}
-            className="rounded-full bg-ink px-4.5 py-2 text-bg transition-opacity hover:opacity-85"
+            className="rounded-full bg-ink px-3.5 py-1.5 text-[13px] text-bg transition-opacity hover:opacity-85"
           >
             문의하기
           </EmailLink>

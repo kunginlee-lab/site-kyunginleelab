@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/site.config";
-import { apps, appIcon, statusLabel } from "@/content/apps";
+import { appIcon, appsByStatus, featuredApp, statusLabel } from "@/content/apps";
 import { heroVideos } from "@/content/hero-videos";
 import Reveal from "@/components/reveal";
 import Parallax from "@/components/parallax";
@@ -30,8 +30,8 @@ const principles = [
   },
 ];
 
-// 홈에서 스크롤리텔링으로 보여줄 대표 앱 — 스크린샷과 기능 설명이 모두 있는 첫 앱
-const featured = apps.find((a) => a.screens?.length && a.features?.length);
+// 홈에서 스크롤리텔링으로 보여줄 대표 앱 (content/apps.ts 의 featured 플래그)
+const featured = featuredApp;
 
 export default function Home() {
   return (
@@ -39,7 +39,8 @@ export default function Home() {
       {/* Hero */}
       <section className="hero-bg relative overflow-hidden">
         <HeroVideoBackground videos={heroVideos} poster="/videos/hero-poster.jpg" />
-        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pb-40 sm:pt-48">
+        {/* 화면 높이의 90% 를 차지해 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
+        <div className="relative mx-auto flex min-h-[90dvh] max-w-6xl items-center px-6 py-24">
           <Parallax>
             <Reveal>
               <p className="eyebrow mb-5">{site.nameEn} · Software Studio</p>
@@ -53,14 +54,14 @@ export default function Home() {
               <div className="mt-10 flex flex-wrap gap-3">
                 <a
                   href="#apps"
-                  className="rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-85"
+                  className="rounded-full bg-ink px-5 py-2.5 text-[13px] font-semibold text-bg transition-opacity hover:opacity-85"
                 >
                   제품 보기
                 </a>
                 <EmailLink
                   user={emailUser}
                   domain={emailDomain}
-                  className="glass rounded-full border border-line px-7 py-3.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent-ink"
+                  className="glass rounded-full border border-line px-5 py-2.5 text-[13px] font-semibold transition-colors hover:border-accent hover:text-accent-ink"
                 >
                   문의하기
                 </EmailLink>
@@ -143,23 +144,24 @@ export default function Home() {
               만들고 있는 제품
             </h2>
           </Reveal>
-          <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2">
-            {apps.map((app, i) => (
-              <Reveal key={app.slug} delay={i * 110}>
+          {/* 앱이 늘어나도 한눈에 — 3열 콤팩트 카드, 출시된 앱부터 */}
+          <div className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+            {appsByStatus.map((app, i) => (
+              <Reveal key={app.slug} delay={Math.min(i, 5) * 90}>
                 <Link
                   href={`/${app.slug}/`}
-                  className="glass group flex h-full flex-col gap-6 rounded-3xl border border-line p-7 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5 sm:p-8"
+                  className="glass group flex h-full flex-col gap-5 rounded-3xl border border-line p-6 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5"
                 >
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-4">
                     <Image
                       src={appIcon(app)}
                       alt={`${app.name} 앱 아이콘`}
-                      width={72}
-                      height={72}
-                      className="h-16 w-16 rounded-2xl border border-line sm:h-18 sm:w-18"
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 rounded-2xl border border-line"
                     />
                     <div>
-                      <h3 className="text-xl font-extrabold tracking-tight">
+                      <h3 className="text-lg font-extrabold tracking-tight">
                         {app.name}
                       </h3>
                       <p className="mt-0.5 text-sm font-medium text-muted">

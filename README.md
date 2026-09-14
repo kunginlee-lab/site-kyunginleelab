@@ -14,6 +14,9 @@ Cloudflare Pages·Vercel·Firebase Hosting 어디서든 그대로 호스팅할 �
    - 선택 필드(`screens`·`features`·`pricing`·`legalLinks`)는 비우면
      해당 섹션이 페이지에서 빠진다 (무료 앱이면 `pricing` 생략).
 3. 출시되면 `status: "live"` + `playUrl`로 바꾼다 → 버튼이 "받기"로 바뀐다.
+4. 홈 상단 스크롤 쇼케이스에 올릴 앱 하나에 `featured: true` (screens·features 필요).
+   제품 그리드는 3열이고 출시된 앱이 먼저 오며, 푸터 목록은 5개부터 두 단이 된다 —
+   앱이 10개를 넘어도 코드 수정 없이 늘어난다.
 
 ## 반드시 채워야 할 값 — `site.config.ts`
 

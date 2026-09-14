@@ -15,6 +15,8 @@ export type AppEntry = {
   tagline: string;
   short: string;
   status: "live" | "coming-soon";
+  /** 홈 상단 스크롤 쇼케이스에 올릴 대표 앱 (screens·features 필요). 없으면 자산 있는 첫 앱 */
+  featured?: boolean;
   playUrl?: string; // status가 live일 때 스토어 버튼에 사용
   screens?: { file: string; alt: string }[];
   features?: { emoji: string; title: string; body: string }[];
@@ -35,6 +37,7 @@ export const apps: AppEntry[] = [
     short:
       "식사 사진 한 장이면 끝. AI가 칼로리와 탄단지를 자동으로 계산해 기록해요.",
     status: "coming-soon",
+    featured: true,
     screens: [
       { file: "screen-1.webp", alt: "CaloSnap 홈 화면 — 오늘의 칼로리 링" },
       { file: "screen-3.webp", alt: "AI 분석 결과 — 사진 위 음식 태그와 칼로리 카드" },
@@ -109,3 +112,14 @@ export const statusLabel: Record<AppEntry["status"], string> = {
 export function appIcon(app: AppEntry) {
   return `/apps/${app.slug}/icon.png`;
 }
+
+const hasShowcase = (a: AppEntry) => !!(a.screens?.length && a.features?.length);
+
+/** 홈 쇼케이스용 대표 앱 — featured 표시된 앱, 없으면 자산 있는 첫 앱 */
+export const featuredApp =
+  apps.find((a) => a.featured && hasShowcase(a)) ?? apps.find(hasShowcase);
+
+/** 목록 표시 순서 — 출시된 앱 먼저, 그다음 등록 순 */
+export const appsByStatus = [...apps].sort(
+  (a, b) => Number(b.status === "live") - Number(a.status === "live"),
+);
