@@ -50,11 +50,7 @@ export default function Home() {
               </h1>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-                {site.name}은 복잡하고 번거로운 일상을 가장 단순한 형태로
-                바꾸는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.
-              </p>
-              <div className="mt-11 flex flex-wrap gap-3">
+              <div className="mt-10 flex flex-wrap gap-3">
                 <a
                   href="#apps"
                   className="rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-bg transition-opacity hover:opacity-85"
@@ -75,7 +71,7 @@ export default function Home() {
       </section>
 
       {/* Statement — 스크롤하면 단어가 차례로 밝아진다 */}
-      <section className="border-y border-line bg-surface/70">
+      <section className="band">
         <div className="mx-auto max-w-6xl px-6">
           <ScrollWords
             className="max-w-5xl text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25] md:text-6xl md:leading-[1.2]"
@@ -111,7 +107,7 @@ export default function Home() {
 
       {/* Featured — 고정 폰 목업 스크롤리텔링 */}
       {featured && featured.screens && featured.features && (
-        <section className="border-y border-line bg-surface/70">
+        <section className="band">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
             <Reveal>
               <p className="eyebrow mb-3">Featured</p>
@@ -191,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Studio band */}
-      <section className="border-y border-line bg-surface/70">
+      <section className="band">
         <div className="mx-auto grid max-w-6xl gap-8 px-6 py-16 sm:grid-cols-2 sm:gap-10 sm:py-24">
           <Reveal>
             <p className="eyebrow mb-3">Studio</p>

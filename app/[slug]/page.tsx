@@ -101,7 +101,7 @@ export default async function AppPage({ params }: Props) {
 
       {/* Showcase — 스크린샷 + 기능을 스크롤리텔링으로 */}
       {hasShowcase ? (
-        <section className="border-y border-line bg-surface/70">
+        <section className="band">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
             <ScrollShowcase
               slug={app.slug}
@@ -113,7 +113,7 @@ export default async function AppPage({ params }: Props) {
       ) : (
         <>
           {app.screens && app.screens.length > 0 && (
-            <section className="border-y border-line bg-surface/70">
+            <section className="band">
               <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-14 sm:grid-cols-4">
                 {app.screens.map((s, i) => (
                   <Reveal key={s.file} delay={i * 90}>
@@ -149,7 +149,7 @@ export default async function AppPage({ params }: Props) {
 
       {/* Pricing */}
       {app.pricing && (
-        <section className="border-t border-line">
+        <section>
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <Reveal>
               <h2 className="mb-2 text-center text-2xl font-bold tracking-tight">

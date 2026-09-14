@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/site.config";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import OverlayScrollbar from "@/components/overlay-scrollbar";
 
 const description = `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`;
 
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <OverlayScrollbar />
       </body>
     </html>
   );

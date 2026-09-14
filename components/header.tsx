@@ -12,14 +12,15 @@ const [emailUser, emailDomain] = site.email.split("@");
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-bg/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 bg-bg/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <LogoMark size={26} />
-          <span className="text-lg font-extrabold tracking-tight">
-            {site.name}
-          </span>
-          <span className="hidden text-[11px] font-semibold uppercase tracking-[0.18em] text-muted sm:inline">
+        <Link
+          href="/"
+          aria-label={`${site.name} 홈`}
+          className="flex items-center gap-3"
+        >
+          <LogoMark size={28} />
+          <span className="hidden text-[11px] font-semibold uppercase tracking-[0.2em] text-muted min-[400px]:inline">
             {site.nameEn}
           </span>
         </Link>

@@ -218,7 +218,7 @@ export default function PrivacyPage() {
         </section>
 
         {appPolicies.length > 0 && (
-          <section className="space-y-3 border-t border-line pt-8">
+          <section className="space-y-3 pt-8">
             <h2>앱별 개인정보처리방침</h2>
             <ul>
               {appPolicies.map((l) => (

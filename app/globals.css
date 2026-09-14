@@ -107,6 +107,73 @@ body::before {
     var(--bg);
 }
 
+/* 섹션 배경 띠 — 경계선 없이 위아래로 스르르 스며들어 한 장처럼 이어진다 */
+.band {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--surface) 62%, transparent) 22%,
+    color-mix(in srgb, var(--surface) 62%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+/* 푸터 — 본문에서 서서히 어두워지며 내려앉는다 */
+.footer-bg {
+  background: linear-gradient(180deg, transparent, var(--surface) 40%);
+}
+
+/* 꼭 필요한 곳의 구분선 — 양끝이 사라지는 얇은 선 */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+}
+
+/* 마우스 환경: 네이티브 스크롤바를 숨기고 오버레이 스크롤바(components/overlay-scrollbar)로 대체 */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  .overlay-scrollbar {
+    display: block;
+  }
+}
+
+.overlay-scrollbar {
+  display: none;
+  position: fixed;
+  top: 8px;
+  bottom: 8px;
+  right: 4px;
+  width: 7px;
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease;
+}
+.overlay-scrollbar.is-visible {
+  opacity: 1;
+}
+.overlay-scrollbar__thumb {
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 38%, transparent);
+  transition: background 160ms ease;
+  will-change: transform;
+}
+.overlay-scrollbar.is-visible .overlay-scrollbar__thumb {
+  pointer-events: auto;
+  cursor: default;
+}
+.overlay-scrollbar__thumb:hover,
+.overlay-scrollbar__thumb:active {
+  background: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
 /* 섹션 상단 소제목 (eyebrow) */
 .eyebrow {
   font-size: 0.75rem;

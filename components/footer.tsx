@@ -16,8 +16,8 @@ export default function Footer() {
   ].filter(Boolean) as string[];
 
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="mx-auto max-w-6xl px-6 py-14">
+    <footer className="footer-bg">
+      <div className="mx-auto max-w-6xl px-6 pb-14 pt-20">
         <div className="grid gap-10 sm:grid-cols-3">
           <div>
             <LogoMark size={36} className="mb-4" />
@@ -72,7 +72,8 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 space-y-1 border-t border-line pt-6 text-xs leading-relaxed text-muted">
+        <div className="hairline mt-12" />
+        <div className="space-y-1 pt-6 text-xs leading-relaxed text-muted">
           {bizLines.map((line) => (
             <p key={line}>{line}</p>
           ))}
