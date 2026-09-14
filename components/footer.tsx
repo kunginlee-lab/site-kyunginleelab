@@ -23,8 +23,7 @@ export default function Footer() {
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between sm:gap-12">
           <div>
             <LogoMark size={36} className="mb-4" />
-            <p className="text-lg font-extrabold tracking-tight">{site.name}</p>
-            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
               {site.nameEn}
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">

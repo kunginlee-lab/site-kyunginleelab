@@ -1,14 +1,22 @@
 import Link from "next/link";
 import { site } from "@/site.config";
+import { appIcon, appsByStatus, statusLabel } from "@/content/apps";
 import LogoMark from "@/components/logo";
 import EmailLink from "@/components/email-link";
-
-const nav = [
-  { label: "소개", href: "/#about" },
-  { label: "제품", href: "/#apps" },
-];
+import ProductsMenu, { type MenuApp } from "@/components/products-menu";
 
 const [emailUser, emailDomain] = site.email.split("@");
+
+// 제품 메가 메뉴에 넘길 목록 — 출시된 앱 먼저 (content/apps.ts 에 추가하면 자동으로 늘어난다)
+const menuApps: MenuApp[] = appsByStatus.map((a) => ({
+  slug: a.slug,
+  name: a.name,
+  tagline: a.tagline,
+  icon: appIcon(a),
+  statusLabel: statusLabel[a.status],
+}));
+
+const linkClass = "text-muted transition-colors hover:text-ink";
 
 export default function Header() {
   return (
@@ -25,15 +33,10 @@ export default function Header() {
           </span>
         </Link>
         <nav className="flex items-center gap-4 text-[13px] font-medium sm:gap-6">
-          {nav.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className="text-muted transition-colors hover:text-ink"
-            >
-              {n.label}
-            </Link>
-          ))}
+          <Link href="/#about" className={linkClass}>
+            소개
+          </Link>
+          <ProductsMenu apps={menuApps} className={linkClass} />
           <EmailLink
             user={emailUser}
             domain={emailDomain}
