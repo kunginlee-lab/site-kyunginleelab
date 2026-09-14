@@ -115,7 +115,7 @@ export default function ScrollShowcase({
                     alt={s.alt}
                     fill
                     sizes="(min-width: 768px) 310px, 42vw"
-                    priority={i === 0}
+                    loading="lazy"
                     className="object-cover transition-opacity duration-700 ease-in-out"
                     style={{ opacity: i === shotIndex ? 1 : 0 }}
                   />

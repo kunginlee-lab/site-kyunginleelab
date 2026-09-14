@@ -42,3 +42,6 @@ next-env.d.ts
 
 # QA 스크린샷
 .qa/
+
+# 폰트 서브셋 원본 캐시
+scripts/.cache/

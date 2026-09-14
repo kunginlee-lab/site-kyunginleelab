@@ -112,6 +112,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `document.documentElement.classList.add("js")`,
           }}
         />
+        {/* 본문 글꼴을 CSS 파싱을 기다리지 않고 바로 받기 시작한다 */}
+        <link
+          rel="preload"
+          href="/fonts/pretendard-subset.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}

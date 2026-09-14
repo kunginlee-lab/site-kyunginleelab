@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "qa": "node scripts/qa-shots.mjs https://kyunginleelab.com/ .qa"
+    "qa": "node scripts/qa-shots.mjs https://kyunginleelab.com/ .qa",
+    "prebuild": "node scripts/build-font.mjs",
+    "build:font": "node scripts/build-font.mjs",
+    "perf": "node scripts/perf.mjs https://kyunginleelab.com/ mobile"
   },
   "dependencies": {
     "next": "16.3.5",
