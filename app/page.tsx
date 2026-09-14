@@ -83,16 +83,18 @@ export default function Home() {
         />
         {/* 화면 높이의 90% 를 차지해 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
         <div className="relative mx-auto flex min-h-[90svh] max-w-6xl items-center px-6 py-24">
+          {/* 첫 화면은 리빌로 감싸지 않는다 — .js .reveal 은 JS 가 돌기 전까지 투명이라,
+              느린 기기에서 제목이 몇 초 동안 비어 보이고 FCP·LCP 도 그만큼 밀린다 */}
           <Parallax>
-            <Reveal>
+            <div>
               <p className="eyebrow mb-5">{site.nameEn} · Software Studio</p>
               <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.3] tracking-tight sm:text-6xl sm:leading-[1.25]">
                 일상을 가볍게 만드는
                 <br />
                 소프트웨어를 만듭니다.
               </h1>
-            </Reveal>
-            <Reveal delay={120}>
+            </div>
+            <div>
               <div className="mt-10 flex flex-wrap gap-3">
                 <a
                   href="#apps"
@@ -108,7 +110,7 @@ export default function Home() {
                   문의하기
                 </EmailLink>
               </div>
-            </Reveal>
+            </div>
           </Parallax>
         </div>
       </section>
