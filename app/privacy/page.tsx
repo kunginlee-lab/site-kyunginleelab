@@ -55,9 +55,16 @@ const processors = [
   { name: "Google LLC — Google Play", task: "인앱 결제(구독) 처리" },
 ];
 
-const appPolicies = apps.flatMap((app) =>
-  (app.legalLinks ?? []).map((l) => ({ app: app.name, ...l })),
-);
+// 앱별 방침 — 사이트 안 문서(legal)가 있으면 그 링크, 없으면 외부 링크
+const appPolicies = apps.flatMap((app) => [
+  ...(app.legal
+    ? [
+        { app: app.name, label: "개인정보처리방침", url: `/${app.slug}/privacy/` },
+        { app: app.name, label: "계정 삭제 안내", url: `/${app.slug}/delete-account/` },
+      ]
+    : []),
+  ...(app.legalLinks ?? []).map((l) => ({ app: app.name, ...l })),
+]);
 
 export default function PrivacyPage() {
   return (

@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/site.config";
-import { appIcon, appsByStatus, featuredApp, statusLabel } from "@/content/apps";
+import { appIcon, apps, appsByStatus, statusLabel } from "@/content/apps";
 import { heroVideos } from "@/content/hero-videos";
 import Reveal from "@/components/reveal";
 import Parallax from "@/components/parallax";
 import ScrollWords from "@/components/scroll-words";
-import ScrollShowcase from "@/components/scroll-showcase";
 import HeroVideoBackground from "@/components/hero-video";
 import EmailLink from "@/components/email-link";
+import AppSearch, { type SearchApp } from "@/components/app-search";
+import FeaturedShowcase, { type FeaturedCandidate } from "@/components/featured-showcase";
 
 const [emailUser, emailDomain] = site.email.split("@");
 
@@ -30,8 +31,29 @@ const principles = [
   },
 ];
 
-// 홈에서 스크롤리텔링으로 보여줄 대표 앱 (content/apps.ts 의 featured 플래그)
-const featured = featuredApp;
+// 검색 목록 — 출시된 앱 먼저
+const searchApps: SearchApp[] = appsByStatus.map((a) => ({
+  slug: a.slug,
+  name: a.name,
+  tagline: a.tagline,
+  short: a.short,
+  icon: appIcon(a),
+  statusLabel: statusLabel[a.status],
+  keywords: a.keywords,
+}));
+
+// Featured 후보 — 스크린샷과 기능 설명이 있는 앱. featured 표시된 앱을 앞에 두어 서버 HTML 의 기본값이 되게 한다
+const featuredCandidates: FeaturedCandidate[] = [...apps]
+  .filter((a) => a.screens?.length && a.features?.length)
+  .sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
+  .map((a) => ({
+    slug: a.slug,
+    name: a.name,
+    tagline: a.tagline,
+    short: a.short,
+    screens: a.screens!,
+    features: a.features!,
+  }));
 
 export default function Home() {
   return (
@@ -40,7 +62,7 @@ export default function Home() {
       <section className="hero-bg relative overflow-hidden">
         <HeroVideoBackground videos={heroVideos} poster="/videos/hero-poster.jpg" />
         {/* 화면 높이의 90% 를 차지해 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
-        <div className="relative mx-auto flex min-h-[90dvh] max-w-6xl items-center px-6 py-24">
+        <div className="relative mx-auto flex min-h-[90svh] max-w-6xl items-center px-6 py-24">
           <Parallax>
             <Reveal>
               <p className="eyebrow mb-5">{site.nameEn} · Software Studio</p>
@@ -105,35 +127,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured — 고정 폰 목업 스크롤리텔링 */}
-      {featured && featured.screens && featured.features && (
-        <section className="band">
-          <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-            <Reveal>
-              <p className="eyebrow mb-3">Featured</p>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                {featured.name} — {featured.tagline}
-              </h2>
-              <p className="mt-3 max-w-xl text-muted">{featured.short}</p>
-            </Reveal>
-            <div className="mt-12 sm:mt-16">
-              <ScrollShowcase
-                slug={featured.slug}
-                screens={featured.screens}
-                features={featured.features}
-              />
+      {/* Search — 앱이 많아져도 바로 찾도록 */}
+      <section id="search" className="scroll-mt-20">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <Reveal>
+            <p className="eyebrow mb-3">Search</p>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+              찾는 앱이 있나요?
+            </h2>
+            <div className="mt-8 max-w-2xl">
+              <AppSearch apps={searchApps} />
             </div>
-            <div className="mt-8 text-center sm:mt-12">
-              <Link
-                href={`/${featured.slug}/`}
-                className="inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-85"
-              >
-                {featured.name} 자세히 보기
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Featured — 고정 폰 목업 스크롤리텔링 (후보 중 접속마다 랜덤) */}
+      <FeaturedShowcase candidates={featuredCandidates} />
 
       {/* Apps */}
       <section id="apps" className="scroll-mt-20">
@@ -202,7 +212,7 @@ export default function Home() {
             user={emailUser}
             domain={emailDomain}
             showAddress
-            className="mt-8 inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-85"
+            className="mt-8 inline-block rounded-full bg-accent px-6 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-85"
           >
             이메일로 문의하기
           </EmailLink>

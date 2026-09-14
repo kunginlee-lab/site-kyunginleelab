@@ -93,7 +93,7 @@ export default function ScrollShowcase({
   return (
     <div className="md:grid md:grid-cols-2 md:gap-16">
       {/* 모바일: 상단 고정, 작게. 데스크톱: 화면 높이 컬럼 안에서 세로 중앙 */}
-      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-gradient-to-b from-bg via-bg/90 to-transparent pb-8 pt-4 md:top-0 md:h-dvh md:items-center md:bg-none md:p-0">
+      <div className="phone-stage sticky top-[52px] z-10 flex justify-center bg-gradient-to-b from-bg via-bg/90 to-transparent pb-8 pt-4 md:top-0 md:h-svh md:items-center md:bg-none md:p-0">
         <div className="phone-float w-[34vw] max-w-[150px] sm:max-w-[200px] md:w-full md:max-w-[310px]">
           <div ref={phone} className="phone-3d relative">
             {/* 바닥 그림자 */}
@@ -125,8 +125,8 @@ export default function ScrollShowcase({
         </div>
       </div>
 
-      {/* 위아래 21dvh 여백: 각 설명(58dvh 박스)의 중앙이 화면 중앙(=폰 중앙)에 올 수 있게 */}
-      <div className="md:py-[21dvh]">
+      {/* 위아래 21svh 여백: 각 설명(58svh 박스)의 중앙이 화면 중앙(=폰 중앙)에 올 수 있게 */}
+      <div className="md:py-[21svh]">
         {features.map((f, i) => (
           <div
             key={f.title}
@@ -134,7 +134,7 @@ export default function ScrollShowcase({
               steps.current[i] = el;
             }}
             data-index={i}
-            className="flex min-h-[45dvh] flex-col justify-center py-8 transition-opacity duration-500 md:min-h-[58dvh]"
+            className="flex min-h-[45svh] flex-col justify-center py-8 transition-opacity duration-500 md:min-h-[58svh]"
             style={{ opacity: i === active ? 1 : 0.3 }}
           >
             <p className="text-2xl sm:text-3xl">{f.emoji}</p>

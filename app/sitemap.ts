@@ -11,6 +11,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/${app.slug}/`,
       lastModified: new Date(),
     })),
+    ...apps
+      .filter((app) => app.legal)
+      .flatMap((app) =>
+        ["privacy", "delete-account"].map((doc) => ({
+          url: `${site.url}/${app.slug}/${doc}/`,
+          lastModified: new Date(),
+        })),
+      ),
     { url: `${site.url}/privacy/`, lastModified: new Date() },
   ];
 }

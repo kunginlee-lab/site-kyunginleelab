@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
@@ -9,6 +10,9 @@ import ScrollShowcase from "@/components/scroll-showcase";
 export function generateStaticParams() {
   return apps.map((app) => ({ slug: app.slug }));
 }
+
+const legalPill =
+  "glass rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-muted transition-colors hover:border-accent hover:text-accent-ink";
 
 export const dynamicParams = false;
 
@@ -186,18 +190,27 @@ export default async function AppPage({ params }: Props) {
         </section>
       )}
 
-      {/* Legal links */}
-      {app.legalLinks && app.legalLinks.length > 0 && (
-        <section className="mx-auto max-w-6xl px-6 py-12 text-center text-sm">
-          {app.legalLinks.map((l) => (
-            <a
-              key={l.url}
-              href={l.url}
-              className="mx-3 text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-            >
-              {l.label}
-            </a>
-          ))}
+      {/* 법적 고지 — 사이트 안 문서는 같은 디자인의 페이지로, 외부 링크는 새 탭 없이 그대로 */}
+      {(app.legal || (app.legalLinks && app.legalLinks.length > 0)) && (
+        <section className="mx-auto max-w-6xl px-6 py-14 text-center">
+          <p className="eyebrow mb-4">Legal</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {app.legal && (
+              <>
+                <Link href={`/${app.slug}/privacy/`} className={legalPill}>
+                  개인정보처리방침
+                </Link>
+                <Link href={`/${app.slug}/delete-account/`} className={legalPill}>
+                  계정 삭제 안내
+                </Link>
+              </>
+            )}
+            {app.legalLinks?.map((l) => (
+              <a key={l.url} href={l.url} className={legalPill}>
+                {l.label}
+              </a>
+            ))}
+          </div>
         </section>
       )}
     </>

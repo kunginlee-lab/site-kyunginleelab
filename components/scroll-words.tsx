@@ -64,9 +64,9 @@ export default function ScrollWords({
   const pr = progress ?? 1;
 
   return (
-    <div ref={ref} style={{ height: `${scrollLength * 100}dvh` }}>
+    <div ref={ref} style={{ height: `${scrollLength * 100}svh` }}>
       {/* 화면 전체 폭 — 글로우가 넘치는 부분은 화면 밖에서만 잘린다 */}
-      <div className="relative sticky top-0 flex min-h-dvh items-center overflow-hidden">
+      <div className="relative sticky top-0 flex min-h-svh items-center overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -inset-x-1/4 inset-y-0 will-change-[transform,opacity]"

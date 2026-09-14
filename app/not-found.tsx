@@ -4,7 +4,7 @@ import LogoMark from "@/components/logo";
 export default function NotFound() {
   return (
     <section className="hero-bg">
-      <div className="mx-auto flex min-h-[70dvh] max-w-6xl flex-col items-center justify-center px-6 py-24 text-center">
+      <div className="mx-auto flex min-h-[70svh] max-w-6xl flex-col items-center justify-center px-6 py-24 text-center">
         <LogoMark size={56} />
         <p className="eyebrow mt-10">404</p>
         <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">

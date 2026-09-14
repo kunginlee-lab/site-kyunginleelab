@@ -9,14 +9,19 @@
  * 선택 필드는 비우면 해당 섹션이 페이지에서 빠집니다 (무료 앱이면 plans 생략 등).
  */
 
+import type { AppLegal } from "./legal";
+import { calosnapLegal } from "./legal/calosnap";
+
 export type AppEntry = {
   slug: string;
   name: string;
   tagline: string;
   short: string;
   status: "live" | "coming-soon";
-  /** 홈 상단 스크롤 쇼케이스에 올릴 대표 앱 (screens·features 필요). 없으면 자산 있는 첫 앱 */
+  /** 홈 상단 스크롤 쇼케이스 후보 중 서버 기본값으로 둘 앱 (접속마다 후보 중 랜덤으로 보여준다) */
   featured?: boolean;
+  /** 홈 검색에서 이름·설명 외에 추가로 걸릴 말들 */
+  keywords?: string[];
   playUrl?: string; // status가 live일 때 스토어 버튼에 사용
   screens?: { file: string; alt: string }[];
   features?: { emoji: string; title: string; body: string }[];
@@ -25,6 +30,9 @@ export type AppEntry = {
     sub?: string;
     plans: { name: string; price: string; detail: string; highlight?: boolean }[];
   };
+  /** 사이트 안에서 제공하는 앱 법적 문서 (content/legal/<slug>.ts) — /<slug>/privacy/, /<slug>/delete-account/ 가 생긴다 */
+  legal?: AppLegal;
+  /** 외부 문서 링크가 따로 있을 때만 */
   legalLinks?: { label: string; url: string }[];
   hasOgImage?: boolean; // public/apps/<slug>/og.png 존재 여부
 };
@@ -38,6 +46,7 @@ export const apps: AppEntry[] = [
       "식사 사진 한 장이면 끝. AI가 칼로리와 탄단지를 자동으로 계산해 기록해요.",
     status: "coming-soon",
     featured: true,
+    keywords: ["칼로리", "식단", "다이어트", "사진", "음식", "영양", "탄단지", "건강", "칼로스냅"],
     screens: [
       { file: "screen-1.webp", alt: "CaloSnap 홈 화면 — 오늘의 칼로리 링" },
       { file: "screen-3.webp", alt: "AI 분석 결과 — 사진 위 음식 태그와 칼로리 카드" },
@@ -90,16 +99,7 @@ export const apps: AppEntry[] = [
         },
       ],
     },
-    legalLinks: [
-      {
-        label: "개인정보처리방침",
-        url: "https://calosnap-app-2026.web.app/privacy.html",
-      },
-      {
-        label: "계정 삭제 안내",
-        url: "https://calosnap-app-2026.web.app/delete-account.html",
-      },
-    ],
+    legal: calosnapLegal,
     hasOgImage: true,
   },
 ];
