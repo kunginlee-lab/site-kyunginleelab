@@ -20,14 +20,23 @@ export default function Parallax({
     const el = ref.current;
     if (!el) return;
     // OS "동작 줄이기" 설정과 무관하게 동작 — Windows 애니메이션 끄기가 흔해서
+    let raf = 0;
     const update = () => {
+      raf = 0;
       const y = window.scrollY;
       el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
       el.style.opacity = String(Math.max(0, 1 - y / fadeAt));
     };
+    // 프레임당 한 번만
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    window.addEventListener("scroll", schedule, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [speed, fadeAt]);
 
   return (
