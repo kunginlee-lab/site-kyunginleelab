@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 이 저장소에서 추가로 무시하는 것 — 검사 대상이 아닌 산출물·캐시
+    ".qa/**",
+    "scripts/.cache/**",
   ]),
 ]);
 

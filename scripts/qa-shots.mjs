@@ -1,8 +1,9 @@
 // 헤드리스 크롬(CDP)으로 데스크톱·모바일 화면을 스크롤하며 캡처 — QA 용
 // usage: node qa_shots.mjs <url> <outDir>
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 const URL = process.argv[2] ?? "https://kyunginleelab.com/";
 const OUT = resolve(process.argv[3] ?? "qa"); // 크롬 --user-data-dir 은 절대경로여야 한다
@@ -14,6 +15,8 @@ const CHROME = [
 ].find((p) => existsSync(p));
 if (!CHROME) throw new Error("chrome.exe not found");
 mkdirSync(OUT, { recursive: true });
+// 크롬 프로필은 프로젝트 밖에 둔다 — 안에 두면 eslint 가 확장 프로그램 코드까지 검사한다
+const PROFILE = mkdtempSync(join(tmpdir(), "qa-"));
 
 const chrome = spawn(
   CHROME,
@@ -25,7 +28,7 @@ const chrome = spawn(
     "--no-first-run",
     "--no-default-browser-check",
     "--hide-scrollbars",
-    `--user-data-dir=${OUT}\\profile`,
+    `--user-data-dir=${PROFILE}`,
     "--window-size=1440,900",
     "about:blank",
   ],

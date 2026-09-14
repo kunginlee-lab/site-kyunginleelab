@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { HeroVideo } from "@/content/hero-videos";
 
@@ -135,9 +134,20 @@ export default function HeroVideoBackground({
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* 포스터는 항상 깔아 둔다 — 영상을 받지 않는 회선에서도 배경이 비지 않는다.
-          CSS 배경이 아니라 이미지로 두어야 브라우저가 HTML 단계에서 발견해 먼저 받는다 (LCP) */}
-      {posterSrc && (
-        <Image src={posterSrc} alt="" fill sizes="100vw" priority className="object-cover" />
+          picture + media 로 두어야 브라우저가 HTML 단계에서 화면에 맞는 판본 하나만 골라 먼저 받는다.
+          (JS 로 바꾸면 가로판을 받은 뒤 세로판을 또 받게 되고, 그만큼 LCP 가 늦어진다) */}
+      {poster && (
+        <picture>
+          {mobilePoster && <source media={MOBILE_QUERY} srcSet={mobilePoster} />}
+          {/* next/image 는 화면별로 다른 파일을 고르지 못해 여기서는 쓰지 않는다 */}
+          <img
+            src={poster}
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </picture>
       )}
       {/* 영상은 시작 신호가 온 뒤에만 DOM 에 넣는다 — 그전에는 요청조차 나가지 않는다 */}
       {started &&
