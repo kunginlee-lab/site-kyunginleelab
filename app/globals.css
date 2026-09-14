@@ -107,6 +107,18 @@ body::before {
     var(--bg);
 }
 
+/* 히어로 영상 위 페이드 — 위는 살짝, 아래는 80% 지점부터 완전한 배경색 (영상 끝 경계가 비치지 않게) */
+.hero-fade {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg) 35%, transparent) 0%,
+    transparent 38%,
+    color-mix(in srgb, var(--bg) 70%, transparent) 66%,
+    var(--bg) 82%,
+    var(--bg) 100%
+  );
+}
+
 /* 섹션 배경 띠 — 경계선 없이 위아래로 스르르 스며들어 한 장처럼 이어진다 */
 .band {
   background: linear-gradient(

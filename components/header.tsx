@@ -19,7 +19,7 @@ export default function Header() {
           aria-label={`${site.name} 홈`}
           className="flex items-center gap-3"
         >
-          <LogoMark size={28} />
+          <LogoMark size={26} priority />
           <span className="hidden text-[11px] font-semibold uppercase tracking-[0.2em] text-muted min-[400px]:inline">
             {site.nameEn}
           </span>

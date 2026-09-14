@@ -90,9 +90,9 @@ export default function HeroVideoBackground({
           }}
         />
       ))}
-      {/* 영상을 연하게 — 배경색으로 눌러 텍스트가 항상 읽히게 한다 */}
+      {/* 영상을 연하게 — 배경색으로 눌러 텍스트가 항상 읽히게 하고, 아래쪽은 영상이 끝나기 전에 완전히 배경색이 되게 한다 */}
       <div className="absolute inset-0 bg-bg/70" />
-      <div className="absolute inset-0 bg-gradient-to-b from-bg/30 via-transparent to-bg" />
+      <div className="hero-fade absolute inset-0" />
     </div>
   );
 }

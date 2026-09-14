@@ -51,7 +51,7 @@ const organizationLd = {
   alternateName: [site.nameEn, site.legalNameEn],
   legalName: site.legalNameEn,
   url: site.url,
-  logo: `${site.url}/brand/logo-mark.png`,
+  logo: `${site.url}/brand/icon-1024.png`,
   foundingDate: "2026",
   founder: { "@type": "Person", name: site.business.representative },
   address: {
