@@ -6,6 +6,7 @@ import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
 import Reveal from "@/components/reveal";
 import ScrollShowcase from "@/components/scroll-showcase";
+import JsonLd, { breadcrumb } from "@/components/json-ld";
 
 export function generateStaticParams() {
   return apps.map((app) => ({ slug: app.slug }));
@@ -59,9 +60,12 @@ export default async function AppPage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd) }}
+      <JsonLd data={appLd} />
+      <JsonLd
+        data={breadcrumb(site.url, [
+          { name: "홈", path: "/" },
+          { name: app.name, path: `/${app.slug}/` },
+        ])}
       />
 
       {/* Hero */}

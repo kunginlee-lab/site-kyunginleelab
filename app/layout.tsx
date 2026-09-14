@@ -2,28 +2,37 @@ import type { Metadata, Viewport } from "next";
 import "./pretendard.css"; // 자체 호스팅 Pretendard (dynamic subset — 필요한 글자 범위만 내려받는다)
 import "./globals.css";
 import { site } from "@/site.config";
+import { apps } from "@/content/apps";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import OverlayScrollbar from "@/components/overlay-scrollbar";
 
-const description = `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`;
+// 검색 결과 요약문 — 브랜드(국문·영문)와 앱 이름이 들어가야 "경인리랩", "CaloSnap" 검색에 걸린다
+const appNames = apps.map((a) => a.name).join(", ");
+const description = `${site.name}(${site.nameEn})은 경기도 수원의 소프트웨어 스튜디오입니다. 데이터를 모으지 않고 한 번의 동작으로 끝나는 모바일 앱(${appNames})을 만듭니다.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  // 제목에는 국문 상호를 넣지 않는다 (링크 미리보기 요청)
+  // 제목에는 국문 상호를 넣지 않는다 (링크 미리보기 요청). 브랜드 검색은 description·keywords·구조화 데이터가 맡는다
   title: {
     default: site.tagline,
     template: `%s — ${site.nameEn}`,
   },
   description,
+  applicationName: site.nameEn,
+  authors: [{ name: site.nameEn, url: site.url }],
+  creator: site.nameEn,
+  publisher: site.legalNameEn,
+  category: "technology",
   keywords: [
     site.name,
     site.nameEn,
     site.legalNameEn,
     "소프트웨어 스튜디오",
     "모바일 앱 개발",
-    "CaloSnap",
-    "칼로리 기록 앱",
+    "앱 개발 스튜디오",
+    "수원 앱 개발",
+    ...apps.flatMap((a) => [a.name, ...(a.keywords ?? [])]),
   ],
   alternates: { canonical: "/" },
   openGraph: {
@@ -33,7 +42,24 @@ export const metadata: Metadata = {
     url: "/",
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  // 소유 확인 코드는 site.config.ts 의 seo 에 넣으면 여기로 들어간다
+  verification: {
+    google: site.seo.googleSiteVerification || undefined,
+    other: site.seo.naverSiteVerification
+      ? { "naver-site-verification": site.seo.naverSiteVerification }
+      : undefined,
+  },
 };
 
 export const viewport: Viewport = {
@@ -52,6 +78,9 @@ const organizationLd = {
   legalName: site.legalNameEn,
   url: site.url,
   logo: `${site.url}/brand/icon-1024.png`,
+  image: `${site.url}/opengraph-image.png`,
+  description,
+  slogan: site.tagline,
   foundingDate: "2026",
   founder: { "@type": "Person", name: site.business.representative },
   address: {

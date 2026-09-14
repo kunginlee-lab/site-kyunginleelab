@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { apps } from "@/content/apps";
 import EmailLink from "@/components/email-link";
+import JsonLd, { breadcrumb } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
@@ -69,6 +70,12 @@ const appPolicies = apps.flatMap((app) => [
 export default function PrivacyPage() {
   return (
     <article className="mx-auto max-w-3xl px-6 pb-24 pt-16 sm:pt-24">
+      <JsonLd
+        data={breadcrumb(site.url, [
+          { name: "홈", path: "/" },
+          { name: "개인정보처리방침", path: "/privacy/" },
+        ])}
+      />
       <p className="eyebrow mb-3">Privacy</p>
       <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
         개인정보처리방침

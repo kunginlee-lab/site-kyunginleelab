@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { apps } from "@/content/apps";
 import { LEGAL_DOC_LABELS, LEGAL_DOC_SLUGS, type LegalDocKey } from "@/content/legal";
 import LegalDocView from "@/components/legal-doc";
+import JsonLd, { breadcrumb } from "@/components/json-ld";
+import { site } from "@/site.config";
 
 // URL 조각 → 문서 키
 const keyBySlug: Record<string, LegalDocKey> = {
@@ -47,14 +49,23 @@ export default async function AppLegalPage({ params }: Props) {
 
   const otherKey: LegalDocKey = r.key === "privacy" ? "deleteAccount" : "privacy";
   return (
-    <LegalDocView
-      appName={r.app.name}
-      appHref={`/${slug}/`}
-      doc={r.legal}
-      sibling={{
-        label: LEGAL_DOC_LABELS[otherKey],
-        href: `/${slug}/${LEGAL_DOC_SLUGS[otherKey]}/`,
-      }}
-    />
+    <>
+      <JsonLd
+        data={breadcrumb(site.url, [
+          { name: "홈", path: "/" },
+          { name: r.app.name, path: `/${slug}/` },
+          { name: LEGAL_DOC_LABELS[r.key], path: `/${slug}/${doc}/` },
+        ])}
+      />
+      <LegalDocView
+        appName={r.app.name}
+        appHref={`/${slug}/`}
+        doc={r.legal}
+        sibling={{
+          label: LEGAL_DOC_LABELS[otherKey],
+          href: `/${slug}/${LEGAL_DOC_SLUGS[otherKey]}/`,
+        }}
+      />
+    </>
   );
 }

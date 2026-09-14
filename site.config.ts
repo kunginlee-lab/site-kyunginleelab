@@ -24,4 +24,11 @@ export const site = {
     effectiveDate: "2026년 9월 13일",
     officer: "이경인",
   },
+  seo: {
+    // 구글 서치콘솔 · 네이버 서치어드바이저에서 받은 소유 확인 코드 — 비워 두면 태그를 넣지 않는다
+    googleSiteVerification: "",
+    naverSiteVerification: "",
+    // IndexNow 키 (public/<key>.txt 와 같은 값) — 배포 후 네이버·빙에 바뀐 URL 을 바로 알린다
+    indexNowKey: "ad62a76d3d24acdd0c2d7852cc3cb7ca",
+  },
 } as const;

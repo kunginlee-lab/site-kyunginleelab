@@ -10,6 +10,21 @@ import HeroVideoBackground from "@/components/hero-video";
 import EmailLink from "@/components/email-link";
 import AppSearch, { type SearchApp } from "@/components/app-search";
 import FeaturedShowcase, { type FeaturedCandidate } from "@/components/featured-showcase";
+import LogoMark from "@/components/logo";
+import JsonLd from "@/components/json-ld";
+
+// 검색엔진용 제품 목록 (schema.org ItemList)
+const productListLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `${site.nameEn} 제품`,
+  itemListElement: appsByStatus.map((a, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: a.name,
+    url: `${site.url}/${a.slug}/`,
+  })),
+};
 
 const [emailUser, emailDomain] = site.email.split("@");
 
@@ -58,6 +73,7 @@ const featuredCandidates: FeaturedCandidate[] = [...apps]
 export default function Home() {
   return (
     <>
+      <JsonLd data={productListLd} />
       {/* Hero */}
       <section className="hero-bg relative overflow-hidden">
         <HeroVideoBackground videos={heroVideos} poster="/videos/hero-poster.jpg" />
@@ -99,6 +115,14 @@ export default function Home() {
           maxWidth="mx-auto max-w-5xl text-center"
           className="text-3xl font-extrabold leading-[1.5] tracking-tight sm:text-5xl sm:leading-[1.45] md:text-6xl md:leading-[1.4]"
           text="더하는 대신 **덜어냅니다.** 설명이 없어도, 데이터를 묻지 않아도, **한** **번의** **동작으로** 충분하도록."
+          outro={
+            <div className="flex flex-col items-center gap-6">
+              <LogoMark size={130} className="drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]" />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted">
+                {site.nameEn}
+              </p>
+            </div>
+          }
         />
       </section>
 
