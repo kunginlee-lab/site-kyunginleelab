@@ -96,8 +96,7 @@ export default function Footer() {
             ))}
           </p>
           <p className="pt-3">
-            © {new Date().getFullYear()} {site.name} ({site.nameEn}). All
-            rights reserved.
+            © {new Date().getFullYear()} {site.nameEn}. All rights reserved.
           </p>
         </div>
       </div>
