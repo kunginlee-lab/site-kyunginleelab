@@ -6,15 +6,20 @@ import type { HeroVideo } from "@/content/hero-videos";
 
 const FADE_MS = 1600;
 
-/** 데이터 절약 모드이거나 느린 회선이면 영상을 아예 받지 않는다 (포스터 이미지로 충분하다) */
+/**
+ * 영상 세 개가 2MB 가 넘는다. 데이터 절약 모드이거나 3G 이하 회선이면 아예 받지 않는다 —
+ * 포스터 이미지만으로도 화면은 완성되고, 느린 회선에서 2MB 는 본문 로딩을 밀어낸다.
+ */
 function prefersNoVideo() {
   const c = (
     navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string };
+      connection?: { saveData?: boolean; effectiveType?: string; downlink?: number };
     }
   ).connection;
   if (!c) return false;
-  return !!c.saveData || c.effectiveType === "2g" || c.effectiveType === "slow-2g";
+  if (c.saveData) return true;
+  if (c.effectiveType && ["slow-2g", "2g", "3g"].includes(c.effectiveType)) return true;
+  return typeof c.downlink === "number" && c.downlink > 0 && c.downlink < 2;
 }
 
 /**
@@ -38,21 +43,29 @@ export default function HeroVideoBackground({
   const [started, setStarted] = useState(false);
   const switching = useRef(false);
 
-  // 첫 화면 로딩이 끝난 뒤에 영상을 시작한다
+  // 첫 화면(포스터·본문)이 자리를 잡은 뒤 곧바로 영상을 시작한다.
+  // 너무 늦게 시작하면 영상이 뒤늦게 그려지면서 LCP 로 잡히므로, 브라우저가 한가해지는 즉시 붙인다.
   useEffect(() => {
     if (videos.length === 0 || prefersNoVideo()) return;
     let timer = 0;
+    let idle = 0;
     const begin = () => {
-      timer = window.setTimeout(() => setStarted(true), 400);
+      const ric = (window as Window & { requestIdleCallback?: typeof requestIdleCallback })
+        .requestIdleCallback;
+      if (ric) idle = ric(() => setStarted(true), { timeout: 1200 });
+      else timer = window.setTimeout(() => setStarted(true), 200);
     };
     if (document.readyState === "complete") begin();
     else {
       window.addEventListener("load", begin, { once: true });
-      // load 이벤트가 늦어도 3초 뒤에는 시작
-      timer = window.setTimeout(() => setStarted(true), 3000);
+      // load 가 늦어도 2.5초 뒤에는 시작
+      timer = window.setTimeout(() => setStarted(true), 2500);
     }
     return () => {
       window.clearTimeout(timer);
+      (
+        window as Window & { cancelIdleCallback?: typeof cancelIdleCallback }
+      ).cancelIdleCallback?.(idle);
       window.removeEventListener("load", begin);
     };
   }, [videos.length]);
@@ -128,6 +141,7 @@ export default function HeroVideoBackground({
               refs.current[i] = el;
             }}
             src={v.src}
+            poster={poster}
             muted
             playsInline
             preload={i === 0 ? "auto" : "none"}
