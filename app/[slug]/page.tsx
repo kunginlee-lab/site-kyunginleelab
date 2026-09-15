@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
+import { versioned, versionedScreens } from "@/content/asset-version";
 import Reveal from "@/components/reveal";
 import ScrollShowcase from "@/components/scroll-showcase";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
@@ -32,7 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description: app.short,
       url: `/${app.slug}/`,
-      ...(app.hasOgImage && { images: [`/apps/${app.slug}/og.png`] }),
+      ...(app.hasOgImage && {
+        images: [versioned(`/apps/${app.slug}/og.png`)],
+      }),
     },
   };
 }
@@ -112,8 +115,7 @@ export default async function AppPage({ params }: Props) {
         <section className="band">
           <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
             <ScrollShowcase
-              slug={app.slug}
-              screens={app.screens!}
+              screens={versionedScreens(app.slug, app.screens!)}
               features={app.features!}
             />
           </div>
@@ -123,10 +125,10 @@ export default async function AppPage({ params }: Props) {
           {app.screens && app.screens.length > 0 && (
             <section className="band">
               <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-14 sm:grid-cols-4">
-                {app.screens.map((s, i) => (
-                  <Reveal key={s.file} delay={i * 90}>
+                {versionedScreens(app.slug, app.screens).map((s, i) => (
+                  <Reveal key={s.src} delay={i * 90}>
                     <Image
-                      src={`/apps/${app.slug}/${s.file}`}
+                      src={s.src}
                       alt={s.alt}
                       width={720}
                       height={1600}
@@ -179,7 +181,14 @@ export default async function AppPage({ params }: Props) {
                         : "glass border-line"
                     }`}
                   >
-                    <h3 className="font-bold">{p.name}</h3>
+                    <h3 className="flex items-center gap-2 font-bold">
+                      {p.name}
+                      {p.highlight && (
+                        <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-bold tracking-tight text-bg">
+                          추천
+                        </span>
+                      )}
+                    </h3>
                     <p className="mt-2 text-2xl font-extrabold tracking-tight">
                       {p.price}
                     </p>
