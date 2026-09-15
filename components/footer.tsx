@@ -66,6 +66,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/about/"
+                  className="text-muted transition-colors hover:text-ink"
+                >
+                  회사 소개
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacy/"
                   className="text-muted transition-colors hover:text-ink"
                 >

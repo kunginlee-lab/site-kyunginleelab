@@ -71,10 +71,13 @@ export const viewport: Viewport = {
   themeColor: "#0d0f0c",
 };
 
-// 검색엔진용 조직 정보 (Google 지식 패널·리치 결과)
+// 검색엔진용 조직 정보 (Google 지식 패널·리치 결과).
+// @id 를 붙여 두면 다른 페이지의 구조화 데이터가 이 회사를 가리켜 참조할 수 있다
+// — 같은 이름이 여러 번 나오는 대신 하나의 대상으로 읽힌다.
 const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${site.url}/#organization`,
   name: site.name,
   alternateName: [site.nameEn, site.legalNameEn],
   legalName: site.legalNameEn,
@@ -83,7 +86,7 @@ const organizationLd = {
   image: `${site.url}/opengraph-image.png`,
   description,
   slogan: site.tagline,
-  foundingDate: "2026",
+  foundingDate: site.foundingYear,
   founder: { "@type": "Person", name: site.business.representative },
   address: {
     "@type": "PostalAddress",
@@ -92,7 +95,11 @@ const organizationLd = {
     addressRegion: "경기도",
     addressCountry: "KR",
   },
+  areaServed: "KR",
+  knowsAbout: ["모바일 앱 개발", "안드로이드 앱", "소프트웨어 스튜디오"],
   taxID: site.business.registrationNumber,
+  // 외부 프로필이 생기기 전에는 빈 sameAs 를 두지 않는다 (아무 근거도 못 준다)
+  ...(site.profiles.length > 0 && { sameAs: [...site.profiles] }),
 };
 
 const websiteLd = {

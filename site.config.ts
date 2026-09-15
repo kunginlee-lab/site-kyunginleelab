@@ -20,6 +20,17 @@ export const site = {
     // 동·호수는 뺀다 — 영문 사업자등록증명·D-U-N-S·Play Console 표기와 동일하게 유지
     address: "경기도 수원시 영통구 덕영대로1555번길 20",
   },
+  /** 설립 연도 — 구조화 데이터의 foundingDate 와 소개 페이지가 함께 쓴다 */
+  foundingYear: "2026",
+  /**
+   * 같은 회사를 가리키는 다른 곳의 주소(schema.org sameAs).
+   *
+   * 검색엔진과 AI 는 자기 사이트 한 곳의 주장만으로 "경인리랩"이 무엇인지 확신하지
+   * 않는다. 서로 다른 출처가 같은 이름과 같은 URL 을 가리킬 때 비로소 하나의 대상으로
+   * 묶인다. Play 개발자 페이지·LinkedIn 회사 페이지·GitHub 조직이 생기면 여기에
+   * 주소만 넣으면 된다 — 홈과 소개 페이지의 구조화 데이터가 함께 따라간다.
+   */
+  profiles: [] as readonly string[],
   privacy: {
     effectiveDate: "2026년 9월 13일",
     officer: "이경인",
