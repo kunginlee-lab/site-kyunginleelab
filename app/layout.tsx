@@ -65,11 +65,10 @@ export const metadata: Metadata = {
   },
 };
 
+// 사이트는 다크 한 벌만 쓴다 (app/globals.css 참고)
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0f0c" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#0d0f0c",
 };
 
 // 검색엔진용 조직 정보 (Google 지식 패널·리치 결과)

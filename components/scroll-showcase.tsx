@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type Screen = { file: string; alt: string };
+type Screen = { src: string; alt: string };
 type Feature = { emoji: string; title: string; body: string };
 
 // 기본 기울기 — 마우스가 없어도 두께와 원근이 보이도록 (CSS 기본값과 동일)
-const BASE_RX = 6;
-const BASE_RY = -22;
+const BASE_RX = 5;
+const BASE_RY = -18;
 // 스크롤로 단계가 바뀔 때마다 이만큼씩 더 돌아간다
-const STEP_RY = 5;
+const STEP_RY = 4;
 
 /**
  * 고정된 폰 목업 옆으로 기능 설명이 스크롤되고, 설명이 바뀔 때마다 화면이 교체된다.
@@ -20,11 +20,9 @@ const STEP_RY = 5;
  * 기울기·하이라이트 위치는 CSS 변수(--rx --ry --mx --my --sx)로 넘긴다 (globals.css 참고).
  */
 export default function ScrollShowcase({
-  slug,
   screens,
   features,
 }: {
-  slug: string;
   screens: Screen[];
   features: Feature[];
 }) {
@@ -37,8 +35,8 @@ export default function ScrollShowcase({
     const el = phone.current;
     if (!el) return;
     const { nx, ny, step } = tilt.current;
-    el.style.setProperty("--ry", `${BASE_RY + step + nx * 16}deg`);
-    el.style.setProperty("--rx", `${BASE_RX - ny * 12}deg`);
+    el.style.setProperty("--ry", `${BASE_RY + step + nx * 13}deg`);
+    el.style.setProperty("--rx", `${BASE_RX - ny * 10}deg`);
     // 하이라이트는 빛(마우스) 쪽으로, 바닥 그림자는 반대쪽으로
     el.style.setProperty("--mx", `${35 + nx * 45}%`);
     el.style.setProperty("--my", `${25 + ny * 45}%`);
@@ -110,8 +108,8 @@ export default function ScrollShowcase({
               <div className="phone-screen relative aspect-[9/19.5] overflow-hidden rounded-[26px] bg-black sm:rounded-[33px] md:rounded-[44px]">
                 {screens.map((s, i) => (
                   <Image
-                    key={s.file}
-                    src={`/apps/${slug}/${s.file}`}
+                    key={s.src}
+                    src={s.src}
                     alt={s.alt}
                     fill
                     sizes="(min-width: 768px) 310px, 42vw"
