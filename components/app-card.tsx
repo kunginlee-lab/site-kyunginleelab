@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { appIcon, statusLabel, type AppEntry } from "@/content/apps";
+import { versioned } from "@/content/asset-version";
 
 /** 제품 목록에 쓰는 앱 카드 — 아이콘·이름·한 줄 소개·설명·상태 */
 export default function AppCard({ app }: { app: AppEntry }) {
@@ -11,7 +12,7 @@ export default function AppCard({ app }: { app: AppEntry }) {
     >
       <div className="flex items-center gap-4">
         <Image
-          src={appIcon(app)}
+          src={versioned(appIcon(app))}
           alt={`${app.name} 앱 아이콘`}
           width={56}
           height={56}

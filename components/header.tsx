@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/site.config";
 import { appIcon, appsByStatus, statusLabel } from "@/content/apps";
+import { versioned } from "@/content/asset-version";
 import LogoMark from "@/components/logo";
 import EmailLink from "@/components/email-link";
 import FadeLink from "@/components/fade-link";
@@ -13,7 +14,7 @@ const menuApps: MenuApp[] = appsByStatus.map((a) => ({
   slug: a.slug,
   name: a.name,
   tagline: a.tagline,
-  icon: appIcon(a),
+  icon: versioned(appIcon(a)),
   statusLabel: statusLabel[a.status],
 }));
 
