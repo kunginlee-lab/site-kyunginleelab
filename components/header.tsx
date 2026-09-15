@@ -3,6 +3,7 @@ import { site } from "@/site.config";
 import { appIcon, appsByStatus, statusLabel } from "@/content/apps";
 import LogoMark from "@/components/logo";
 import EmailLink from "@/components/email-link";
+import FadeLink from "@/components/fade-link";
 import ProductsMenu, { type MenuApp } from "@/components/products-menu";
 
 const [emailUser, emailDomain] = site.email.split("@");
@@ -33,9 +34,9 @@ export default function Header() {
           </span>
         </Link>
         <nav className="flex items-center gap-4 text-[13px] font-medium sm:gap-6">
-          <Link href="/#about" className={linkClass}>
+          <FadeLink href="/#about" className={linkClass}>
             소개
-          </Link>
+          </FadeLink>
           <ProductsMenu apps={menuApps} className={linkClass} />
           <EmailLink
             user={emailUser}

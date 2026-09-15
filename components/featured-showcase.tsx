@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import FadeLink from "@/components/fade-link";
 import { useSyncExternalStore } from "react";
 import ScrollShowcase from "@/components/scroll-showcase";
 
@@ -9,7 +9,7 @@ export type FeaturedCandidate = {
   name: string;
   tagline: string;
   short: string;
-  screens: { file: string; alt: string }[];
+  screens: { src: string; alt: string }[];
   features: { emoji: string; title: string; body: string }[];
 };
 
@@ -49,18 +49,17 @@ export default function FeaturedShowcase({ candidates }: { candidates: FeaturedC
           {/* key 로 앱이 바뀔 때 쇼케이스 상태(활성 단계)를 초기화 */}
           <ScrollShowcase
             key={app.slug}
-            slug={app.slug}
             screens={app.screens}
             features={app.features}
           />
         </div>
         <div className="mt-8 text-center sm:mt-12">
-          <Link
-            href={`/${app.slug}/`}
+          <FadeLink
+            href="/products/"
             className="inline-block rounded-full bg-accent px-6 py-2.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-85"
           >
-            {app.name} 자세히 보기
-          </Link>
+            모든 제품 보기
+          </FadeLink>
         </div>
       </div>
     </section>

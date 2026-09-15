@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { site } from "@/site.config";
 import { appIcon, apps, appsByStatus, statusLabel } from "@/content/apps";
+import FadeLink from "@/components/fade-link";
+import { versionedScreens } from "@/content/asset-version";
 import { heroVideos } from "@/content/hero-videos";
 import Reveal from "@/components/reveal";
 import Parallax from "@/components/parallax";
@@ -66,7 +66,7 @@ const featuredCandidates: FeaturedCandidate[] = [...apps]
     name: a.name,
     tagline: a.tagline,
     short: a.short,
-    screens: a.screens!,
+    screens: versionedScreens(a.slug, a.screens!),
     features: a.features!,
   }));
 
@@ -81,8 +81,8 @@ export default function Home() {
           poster="/videos/hero-poster.jpg"
           mobilePoster="/videos/hero-poster-m.jpg"
         />
-        {/* 화면 높이의 90% 를 차지해 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
-        <div className="relative mx-auto flex min-h-[90svh] max-w-6xl items-center px-6 py-24">
+        {/* 화면을 가득 채워 배경 영상이 넓게 보이고, 문구는 세로 중앙 */}
+        <div className="relative mx-auto flex min-h-[100svh] max-w-6xl items-center px-6 py-24">
           {/* 첫 화면은 리빌로 감싸지 않는다 — .js .reveal 은 JS 가 돌기 전까지 투명이라,
               느린 기기에서 제목이 몇 초 동안 비어 보이고 FCP·LCP 도 그만큼 밀린다 */}
           <Parallax>
@@ -96,12 +96,12 @@ export default function Home() {
             </div>
             <div>
               <div className="mt-10 flex flex-wrap gap-3">
-                <a
-                  href="#apps"
+                <FadeLink
+                  href="/products/"
                   className="rounded-full bg-ink px-5 py-2.5 text-[13px] font-semibold text-bg transition-opacity hover:opacity-85"
                 >
                   제품 보기
-                </a>
+                </FadeLink>
                 <EmailLink
                   user={emailUser}
                   domain={emailDomain}
@@ -163,9 +163,9 @@ export default function Home() {
           <Reveal>
             <p className="eyebrow mb-5">Search</p>
             <h2 className="mx-auto max-w-3xl text-3xl font-extrabold leading-[1.3] tracking-tight sm:text-5xl sm:leading-[1.25]">
-              오늘은 무엇을
+              당신에게 맞는
               <br />
-              가볍게 할까요?
+              하나를 찾아보세요.
             </h2>
             <div className="mx-auto mt-10 max-w-3xl text-left">
               <AppSearch apps={searchApps} />
@@ -176,62 +176,6 @@ export default function Home() {
 
       {/* Featured — 고정 폰 목업 스크롤리텔링 (후보 중 접속마다 랜덤) */}
       <FeaturedShowcase candidates={featuredCandidates} />
-
-      {/* Apps */}
-      <section id="apps" className="scroll-mt-20">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <Reveal>
-            <p className="eyebrow mb-3">Products</p>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              만들고 있는 제품
-            </h2>
-          </Reveal>
-          {/* 앱이 늘어나도 한눈에 — 최대 3열 카드, 출시된 앱부터. 카드가 적을 땐 가운데로 모인다 */}
-          <div className="mt-10 flex flex-wrap justify-center gap-5 sm:mt-12">
-            {appsByStatus.map((app, i) => (
-              <Reveal
-                key={app.slug}
-                delay={Math.min(i, 5) * 90}
-                className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)]"
-              >
-                <Link
-                  href={`/${app.slug}/`}
-                  className="glass group flex h-full flex-col gap-5 rounded-3xl border border-line p-6 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5"
-                >
-                  <div className="flex items-center gap-4">
-                    <Image
-                      src={appIcon(app)}
-                      alt={`${app.name} 앱 아이콘`}
-                      width={56}
-                      height={56}
-                      className="h-14 w-14 rounded-2xl border border-line"
-                    />
-                    <div>
-                      <h3 className="text-lg font-extrabold tracking-tight">
-                        {app.name}
-                      </h3>
-                      <p className="mt-0.5 text-sm font-medium text-muted">
-                        {app.tagline}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="flex-1 text-sm leading-relaxed text-muted">
-                    {app.short}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent-ink">
-                      {statusLabel[app.status]}
-                    </span>
-                    <span className="text-sm font-semibold text-accent-ink transition-transform group-hover:translate-x-1">
-                      자세히 →
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Contact */}
       <section id="contact" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-16 text-center sm:py-24">

@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: site.nameEn,
     description: `${site.name}(${site.nameEn})은 프라이버시를 우선하는 모바일 앱을 만드는 소프트웨어 스튜디오입니다.`,
     start_url: "/",
-    display: "browser",
+    display: "standalone",
     background_color: "#0d0f0c",
     theme_color: "#10684a",
     icons: [

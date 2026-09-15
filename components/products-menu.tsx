@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import FadeLink from "@/components/fade-link";
 import {
   useCallback,
   useEffect,
@@ -35,7 +35,7 @@ const useMounted = () =>
 /**
  * 헤더 "제품" 항목 — 마우스를 올리면 헤더 아래로 전체 폭 패널이 내려오고 앱 목록이 펼쳐진다 (애플 내비 스타일).
  * - 패널·어둠막은 body 로 포털해서 헤더의 backdrop-filter 영향 없이 뷰포트 기준으로 놓인다
- * - 마우스 환경에서만 열리고, 터치에선 그냥 /#apps 로 가는 링크
+ * - 마우스 환경에서만 열리고, 터치에선 그냥 제품 페이지로 가는 링크
  * - Tab 으로 들어오면 열리고 Esc·스크롤·바깥 클릭으로 닫힌다
  */
 export default function ProductsMenu({
@@ -117,9 +117,9 @@ export default function ProductsMenu({
           <ul className="mt-4 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
             {apps.map((app) => (
               <li key={app.slug}>
-                <Link
+                <FadeLink
                   href={`/${app.slug}/`}
-                  onClick={close}
+                  onNavigate={close}
                   className="-mx-3 flex items-center gap-4 rounded-2xl px-3 py-2.5 transition-colors hover:bg-surface/80"
                 >
                   <Image
@@ -140,17 +140,17 @@ export default function ProductsMenu({
                       {app.tagline}
                     </span>
                   </span>
-                </Link>
+                </FadeLink>
               </li>
             ))}
           </ul>
-          <Link
-            href="/#apps"
-            onClick={close}
+          <FadeLink
+            href="/products/"
+            onNavigate={close}
             className="mt-6 inline-block text-sm font-semibold text-accent-ink transition-opacity hover:opacity-80"
           >
             모든 제품 보기 →
-          </Link>
+          </FadeLink>
         </div>
       </div>
     </div>
@@ -158,9 +158,10 @@ export default function ProductsMenu({
 
   return (
     <>
-      <Link
-        href="/#apps"
+      <FadeLink
+        href="/products/"
         className={className}
+        onNavigate={close}
         aria-haspopup="true"
         aria-expanded={open}
         onPointerEnter={onTriggerEnter}
@@ -169,7 +170,7 @@ export default function ProductsMenu({
         onBlur={onTriggerBlur}
       >
         제품
-      </Link>
+      </FadeLink>
       {mounted && createPortal(panel, document.body)}
     </>
   );

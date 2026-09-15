@@ -6,6 +6,7 @@ import { apps } from "@/content/apps";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import OverlayScrollbar from "@/components/overlay-scrollbar";
+import PageFade from "@/components/page-fade";
 
 // 검색 결과 요약문 — 브랜드(국문·영문)가 들어가야 "경인리랩" 검색에 걸린다.
 // 네이버 권장에 맞춰 80자 이내로 고정 (앱 이름은 각 제품 페이지가 맡는다)
@@ -42,6 +43,8 @@ export const metadata: Metadata = {
     url: "/",
   },
   twitter: { card: "summary_large_image" },
+  // 홈 화면에 추가하면 주소창 없이 앱처럼 열린다 (일반 브라우저·카카오 인앱 브라우저의 주소창은 웹에서 못 숨긴다)
+  appleWebApp: { capable: true, statusBarStyle: "black", title: site.nameEn },
   robots: {
     index: true,
     follow: true,
@@ -134,6 +137,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         <Footer />
         <OverlayScrollbar />
+        <PageFade />
       </body>
     </html>
   );
