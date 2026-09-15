@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import FadeLink from "@/components/fade-link";
 import {
   useCallback,
@@ -23,6 +24,11 @@ export type MenuApp = {
 
 const HEADER_H = 52;
 const CLOSE_DELAY_MS = 160;
+const PRODUCTS_PATH = "/products";
+
+/** trailingSlash 설정 때문에 `/products` 로도 `/products/` 로도 올 수 있다. */
+const isProductsPath = (pathname: string) =>
+  pathname.replace(/\/+$/, "") === PRODUCTS_PATH;
 
 const subscribe = () => () => {};
 const useMounted = () =>
@@ -50,10 +56,22 @@ export default function ProductsMenu({
   const timer = useRef(0);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // 이미 제품 목록을 보고 있으면 메뉴를 열지 않는다 — 같은 목록으로 화면을 덮을 이유가 없다.
+  const pathname = usePathname();
+  const onProductsPage = isProductsPath(pathname);
+
+  // 화면이 바뀌면 열려 있던 패널은 접는다. 렌더 중에 맞추므로 한 번 더 그리지 않는다.
+  const [seenPath, setSeenPath] = useState(pathname);
+  if (pathname !== seenPath) {
+    setSeenPath(pathname);
+    setOpen(false);
+  }
+
   const show = useCallback(() => {
+    if (onProductsPage) return;
     window.clearTimeout(timer.current);
     setOpen(true);
-  }, []);
+  }, [onProductsPage]);
   const hide = useCallback(() => {
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => setOpen(false), CLOSE_DELAY_MS);
@@ -162,8 +180,9 @@ export default function ProductsMenu({
         href="/products/"
         className={className}
         onNavigate={close}
-        aria-haspopup="true"
-        aria-expanded={open}
+        aria-current={onProductsPage ? "page" : undefined}
+        aria-haspopup={onProductsPage ? undefined : "true"}
+        aria-expanded={onProductsPage ? undefined : open}
         onPointerEnter={onTriggerEnter}
         onPointerLeave={hide}
         onFocus={show}
@@ -171,7 +190,7 @@ export default function ProductsMenu({
       >
         제품
       </FadeLink>
-      {mounted && createPortal(panel, document.body)}
+      {mounted && !onProductsPage && createPortal(panel, document.body)}
     </>
   );
 }
