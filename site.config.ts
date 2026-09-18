@@ -30,7 +30,10 @@ export const site = {
    * 묶인다. Play 개발자 페이지·LinkedIn 회사 페이지·GitHub 조직이 생기면 여기에
    * 주소만 넣으면 된다 — 홈과 소개 페이지의 구조화 데이터가 함께 따라간다.
    */
-  profiles: ["https://github.com/kyunginleelab"] as readonly string[],
+  profiles: [
+    "https://github.com/kyunginleelab",
+    "https://www.youtube.com/@kyunginleelab",
+  ] as readonly string[],
   privacy: {
     effectiveDate: "2026년 9월 13일",
     officer: "이경인",

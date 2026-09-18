@@ -5,7 +5,22 @@ import LogoMark from "@/components/logo";
 import EmailLink from "@/components/email-link";
 
 const [emailUser, emailDomain] = site.email.split("@");
-const githubUrl = site.profiles.find((u) => u.includes("github.com"));
+/**
+ * 바깥 프로필 링크 — site.config 의 profiles 에 주소를 넣으면 여기 자동으로 붙는다.
+ * 구조화 데이터의 sameAs 와 짝이 되는, 눈에 보이는 연결이다. 사이트가 프로필을
+ * 가리키고 프로필이 사이트를 가리켜야 검색엔진이 둘을 같은 회사로 읽는다.
+ */
+const PROFILE_LABELS: Record<string, string> = {
+  "github.com": "GitHub",
+  "youtube.com": "YouTube",
+  "play.google.com": "Google Play",
+  "linkedin.com": "LinkedIn",
+};
+const profileLinks = site.profiles.map((url) => {
+  const host = new URL(url).hostname.replace(/^www\./, "");
+  const key = Object.keys(PROFILE_LABELS).find((k) => host.endsWith(k));
+  return { url, label: key ? PROFILE_LABELS[key] : host };
+});
 
 export default function Footer() {
   const { registrationNumber, representative, address } = site.business;
@@ -81,19 +96,17 @@ export default function Footer() {
                   개인정보처리방침
                 </Link>
               </li>
-              {/* 구조화 데이터의 sameAs 와 짝이 되는 눈에 보이는 링크 —
-                  사이트와 프로필이 서로를 가리켜야 같은 회사로 읽힌다 */}
-              {githubUrl && (
-                <li>
+              {profileLinks.map(({ url, label }) => (
+                <li key={url}>
                   <a
-                    href={githubUrl}
+                    href={url}
                     rel="me noopener"
                     className="text-muted transition-colors hover:text-ink"
                   >
-                    GitHub
+                    {label}
                   </a>
                 </li>
-              )}
+              ))}
             </ul>
           </div>
         </div>
