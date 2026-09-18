@@ -5,6 +5,8 @@ import { apps, appsByStatus } from "@/content/apps";
 import Reveal from "@/components/reveal";
 import EmailLink from "@/components/email-link";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
+import YouTubeEmbed from "@/components/youtube-embed";
+import { videos, videoThumbnail, videoUrl } from "@/content/videos";
 import { openGraph } from "@/lib/seo";
 
 /*
@@ -76,6 +78,26 @@ const aboutLd = {
   mainEntity: { "@id": `${site.url}/#organization` },
 };
 
+/**
+ * 영상 구조화 데이터. 유튜브에 올린 것만으로는 이 사이트가 구글 동영상 검색에
+ * 잡히지 않는다. 영상이 실린 페이지에 VideoObject 를 붙여야 그 페이지가 후보가
+ * 되고, publisher 로 회사까지 이어진다.
+ */
+const videoLd = videos.map((v) => ({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "@id": `${site.url}/about/#video-${v.id}`,
+  name: v.title,
+  description: v.description,
+  thumbnailUrl: videoThumbnail(v.id),
+  uploadDate: v.uploadDate,
+  duration: v.duration,
+  contentUrl: videoUrl(v.id),
+  embedUrl: `https://www.youtube-nocookie.com/embed/${v.id}`,
+  publisher: { "@id": `${site.url}/#organization` },
+  inLanguage: "ko-KR",
+}));
+
 const faqLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -96,6 +118,9 @@ export default function AboutPage() {
         ])}
       />
       <JsonLd data={aboutLd} />
+      {videoLd.map((v) => (
+        <JsonLd key={v["@id"]} data={v} />
+      ))}
       <JsonLd data={faqLd} />
 
       <section className="hero-bg">
@@ -128,6 +153,21 @@ export default function AboutPage() {
               앱이 동작하는 데 꼭 필요한 것만 둡니다. 기능을 넓게 벌이기보다 매일
               쓰이는 하나를 오래 다듬는 쪽을 택합니다.
             </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={90}>
+          <h2 className="mb-6 mt-14 text-xl font-bold tracking-tight">영상</h2>
+          <div className="space-y-8">
+            {videos.map((v) => (
+              <div key={v.id}>
+                <YouTubeEmbed id={v.id} title={v.title} />
+                <h3 className="mt-3 font-semibold">{v.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">
+                  {v.description}
+                </p>
+              </div>
+            ))}
           </div>
         </Reveal>
 

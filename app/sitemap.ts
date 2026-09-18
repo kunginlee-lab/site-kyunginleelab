@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/site.config";
 import { apps, appIcon, type AppEntry } from "@/content/apps";
+import { videos, videoThumbnail, videoUrl } from "@/content/videos";
 
 export const dynamic = "force-static";
 
@@ -47,6 +48,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
       images: [abs("/brand/icon-1024.png")],
+      // 소개 페이지에 실린 영상 — 구글은 동영상을 따로 수집한다
+      videos: videos.map((v) => ({
+        title: v.title,
+        thumbnail_loc: videoThumbnail(v.id),
+        description: v.description,
+        content_loc: videoUrl(v.id),
+        player_loc: `https://www.youtube-nocookie.com/embed/${v.id}`,
+        publication_date: v.uploadDate,
+      })),
     },
     ...apps.map((app) => ({
       url: `${site.url}/${app.slug}/`,
