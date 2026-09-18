@@ -96,7 +96,12 @@ const organizationLd = {
     addressCountry: "KR",
   },
   areaServed: "KR",
-  knowsAbout: ["모바일 앱 개발", "안드로이드 앱", "소프트웨어 스튜디오"],
+  knowsAbout: [
+    "모바일 앱 개발",
+    "안드로이드 앱",
+    "소프트웨어 스튜디오",
+    ...apps.map((a) => a.name),
+  ],
   taxID: site.business.registrationNumber,
   // 외부 프로필이 생기기 전에는 빈 sameAs 를 두지 않는다 (아무 근거도 못 준다)
   ...(site.profiles.length > 0 && { sameAs: [...site.profiles] }),

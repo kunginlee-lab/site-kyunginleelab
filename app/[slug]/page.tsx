@@ -52,6 +52,7 @@ export default async function AppPage({ params }: Props) {
   const appLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
+    "@id": `${site.url}/${app.slug}/#app`,
     name: app.name,
     description: app.short,
     url: `${site.url}/${app.slug}/`,
@@ -60,7 +61,10 @@ export default async function AppPage({ params }: Props) {
     operatingSystem: "Android",
     ...(app.playUrl && { installUrl: app.playUrl }),
     offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
-    author: { "@type": "Organization", name: site.name, url: site.url },
+    // 회사는 layout 의 Organization 한 곳에만 적고 여기서는 가리키기만 한다.
+    // 이 연결이 "경인리랩이 만드는 것"을 검색엔진에 알려 주는 유일한 선이다.
+    author: { "@id": `${site.url}/#organization` },
+    publisher: { "@id": `${site.url}/#organization` },
   };
 
   const hasShowcase = !!(app.screens?.length && app.features?.length);
