@@ -5,6 +5,7 @@ import { apps, appsByStatus } from "@/content/apps";
 import Reveal from "@/components/reveal";
 import EmailLink from "@/components/email-link";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
+import { openGraph } from "@/lib/seo";
 
 /*
  * 회사 소개 — 홈의 "제품을 만드는 방식"이 감성 문장이라면, 이 페이지는 사실을
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/about/" },
-  openGraph: { title, description, url: "/about/" },
+  openGraph: openGraph({ title, description, path: "/about/" }),
 };
 
 /** 표로 보여 줄 사업자 정보 — 푸터·구조화 데이터와 같은 값을 쓴다 */

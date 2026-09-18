@@ -3,12 +3,17 @@ import { site } from "@/site.config";
 import { apps } from "@/content/apps";
 import EmailLink from "@/components/email-link";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
+import { openGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
   description: `${site.name}(${site.legalNameEn}) 웹사이트 및 모바일 앱의 개인정보처리방침`,
   alternates: { canonical: "/privacy/" },
-  openGraph: { url: "/privacy/", title: "개인정보처리방침" },
+  openGraph: openGraph({
+    title: "개인정보처리방침",
+    description: `${site.name}(${site.legalNameEn}) 웹사이트 및 모바일 앱의 개인정보처리방침`,
+    path: "/privacy/",
+  }),
 };
 
 const [emailUser, emailDomain] = site.email.split("@");

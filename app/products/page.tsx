@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
-import { appsByStatus } from "@/content/apps";
+import { apps, appsByStatus } from "@/content/apps";
 import Reveal from "@/components/reveal";
 import AppCard from "@/components/app-card";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
+import { openGraph } from "@/lib/seo";
 
 const title = "제품";
-const description = `${site.name}(${site.nameEn})이 만들고 있는 앱 전체 목록입니다.`;
+// 앱 이름을 넣어 제품명 검색에도 걸리게 한다. 앞 세 개만 적어 앱이 늘어도 80자를 넘지 않는다
+const shown = apps.slice(0, 3).map((a) => a.name).join(", ");
+const description = `${site.name}(${site.nameEn})이 만들고 있는 앱 ${apps.length}개 — ${shown} 등 전체 목록입니다.`;
 
 export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/products/" },
-  openGraph: { title, description, url: "/products/" },
+  openGraph: openGraph({ title, description, path: "/products/" }),
 };
 
 export default function ProductsPage() {

@@ -4,6 +4,7 @@ import { apps } from "@/content/apps";
 import { LEGAL_DOC_LABELS, LEGAL_DOC_SLUGS, type LegalDocKey } from "@/content/legal";
 import LegalDocView from "@/components/legal-doc";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
+import { openGraph } from "@/lib/seo";
 import { site } from "@/site.config";
 
 // URL 조각 → 문서 키
@@ -38,7 +39,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: r.legal.description,
     alternates: { canonical: `/${slug}/${doc}/` },
-    openGraph: { title, description: r.legal.description, url: `/${slug}/${doc}/` },
+    openGraph: openGraph({
+      title,
+      description: r.legal.description,
+      path: `/${slug}/${doc}/`,
+    }),
   };
 }
 

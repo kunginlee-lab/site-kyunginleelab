@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { site } from "@/site.config";
 import { apps, appIcon, statusLabel } from "@/content/apps";
 import { versioned, versionedScreens } from "@/content/asset-version";
+import { openGraph } from "@/lib/seo";
 import Reveal from "@/components/reveal";
 import ScrollShowcase from "@/components/scroll-showcase";
 import JsonLd, { breadcrumb } from "@/components/json-ld";
@@ -29,14 +30,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: app.short,
     alternates: { canonical: `/${app.slug}/` },
-    openGraph: {
+    openGraph: openGraph({
       title,
       description: app.short,
-      url: `/${app.slug}/`,
+      path: `/${app.slug}/`,
       ...(app.hasOgImage && {
-        images: [versioned(`/apps/${app.slug}/og.png`)],
+        image: {
+          url: versioned(`/apps/${app.slug}/og.png`),
+          alt: `${app.name} — ${app.tagline}`,
+        },
       }),
-    },
+    }),
   };
 }
 
