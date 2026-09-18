@@ -79,10 +79,6 @@ function banner() {
           font-weight="500" fill="${MUTED}">일상을 가볍게 만드는 앱을 만듭니다</text>
   </g>
 
-  <!-- 만드는 앱 — 위 글과 같은 선에서 시작 -->
-  <text x="${textX}" y="${cy + 136}" font-family="${FONT}" font-size="23"
-        font-weight="600" fill="${MUTED}" letter-spacing="2"
-        opacity="0.8">CaloSnap · MyVoice · 묘연 · 무한의 계단</text>
 </svg>`);
 }
 
@@ -94,7 +90,7 @@ mkdirSync(OUT, { recursive: true });
 const markSize = 196;
 const blockW = 168 + 44 + 540;
 const markLeft = Math.round(W / 2 - blockW / 2 - 14);
-const markTop = Math.round(H / 2 - markSize / 2 - 8);
+const markTop = Math.round(H / 2 - markSize / 2 + 6);
 
 const base = await sharp(banner(), { density: 144 })
   .resize(W, H)
